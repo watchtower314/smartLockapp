@@ -37,6 +37,7 @@ private ImageView unlock_b;
     String userid="58e91fd7fafa6700044b8d61";
     public String l_status=" ";
     private ProgressDialog pDialog;
+    int count =0;
 
 
 
@@ -90,7 +91,7 @@ private ImageView unlock_b;
                         //TODO go to get action
 
 
-                        Toast.makeText(getApplicationContext(), "THE LOCK Status ", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(), "THE LOCK Status ", Toast.LENGTH_LONG).show();
                         getAction2(requestId.toString()).equals("unhandle");
                         // while (getAction2(requestId.toString()).equals("unhandle")){
                         //   getAction2(requestId.toString());
@@ -130,9 +131,9 @@ private ImageView unlock_b;
 
                 // params.put("lockId", SQLiteHandler.CURRENT_LOCKID);
                 Log.d("lockid",lockid);
-                params.put("username",SQLiteHandler.CURRENT_USERNAME);
-                params.put("lockid",SQLiteHandler.CURRENT_LOCKID);
-               // params.put("userId",userid);
+                params.put("username",AppConfig.CURRENT_USERNAME);
+                params.put("lockid",AppConfig.CURRENT_LOCKID);
+                params.put("token",AppConfig.TOKEN);
                 //params.put("lockId",lockid);
 
                 // params.put("username", SQLiteHandler.CURRENT_USERNAME);
@@ -153,8 +154,11 @@ private ImageView unlock_b;
         Log.d("result", result);
         pDialog.setMessage("waiting for checking ...");
         showDialog();
+       // count++;
 
-        String uri = "https://smartlockproject.herokuapp.com/api/checkLockAction/" + result;
+
+        String uri = "https://smartlockproject.herokuapp.com/api/checkLockAction/" + result+
+                "?token="+AppConfig.TOKEN;
         final StringRequest stringRequest = new StringRequest(uri,
                 new Response.Listener<String>() {
                     @Override
@@ -177,8 +181,13 @@ private ImageView unlock_b;
                                         OpenLock.class);
                                 startActivity(intent);
 
-                            } else {
-                                Log.d("here", "hereee");
+                            } else if((l_status.equals("timeout")) ){
+                                String errorMsg ="oops someting went wrong please try again-timeout error";
+                                Toast.makeText(getApplicationContext(),
+                                        errorMsg, Toast.LENGTH_LONG).show();
+                                hideDialog();
+                            }
+                            else{
                                 getAction2(result);
                             }
 
@@ -195,7 +204,9 @@ private ImageView unlock_b;
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(CloseLock.this, error.getMessage(), Toast.LENGTH_LONG).show();
+                        String errorMsg ="oops someting went wrong please try again";
+                        Toast.makeText(CloseLock.this, errorMsg, Toast.LENGTH_LONG).show();
+                        hideDialog();
                     }
                 });
         Log.d("status", l_status);
@@ -209,7 +220,7 @@ private ImageView unlock_b;
     public void changeStatus(){
         /*String uri = String.format("https://smartlockproject.herokuapp.com/api/getUser?param1=%1$s",
                 uid);*/
-        String uri="https://smartlockproject.herokuapp.com/api/updateLockStatus/"+SQLiteHandler.CURRENT_LOCKID
+        String uri="https://smartlockproject.herokuapp.com/api/updateLockStatus/"+AppConfig.CURRENT_LOCKID
                 +"/"+cngTOstatus;
 
         final StringRequest stringRequest = new StringRequest(Request.Method.PUT,uri,
@@ -313,9 +324,9 @@ private ImageView unlock_b;
 
                 // params.put("lockId", SQLiteHandler.CURRENT_LOCKID);
                 Log.d("lockid",lockid);
-                params.put("username",SQLiteHandler.CURRENT_USERNAME);
-                params.put("lockid",SQLiteHandler.CURRENT_LOCKID);
-               // params.put("userId",userid);
+                //params.put("username",SQLiteHandler.CURRENT_USERNAME);
+                params.put("lockid",AppConfig.CURRENT_LOCKID);
+                params.put("token",AppConfig.TOKEN);
                // params.put("lockId",lockid);
 
                 // params.put("username", SQLiteHandler.CURRENT_USERNAME);
@@ -354,6 +365,27 @@ private ImageView unlock_b;
 
                 return true;
 
+            case R.id.setting:
+                Intent intent2 = new Intent(CloseLock.this,
+                        Settings.class);
+                startActivity(intent2);
+
+                return true;
+
+            case R.id.home:
+                if(AppConfig.CURRENT_PERMISSION_TYPE==MANGER) {
+                    Intent intent3 = new Intent(CloseLock.this,
+                            MngUsers.class);
+                    startActivity(intent3);
+                }
+                else{
+                    Intent intent4 = new Intent(CloseLock.this,
+                            MemberLanding.class);
+                    startActivity(intent4);
+                }
+
+                return true;
+
 
         }
 
@@ -362,7 +394,7 @@ private ImageView unlock_b;
 
 
     public void chkLockStatus(){
-        String uri="https://smartlockproject.herokuapp.com/api/getLock/"+SQLiteHandler.CURRENT_LOCKID;
+        String uri="https://smartlockproject.herokuapp.com/api/getLock/"+AppConfig.CURRENT_LOCKID;
 
         final StringRequest stringRequest = new StringRequest(uri,
                 new Response.Listener<String>() {

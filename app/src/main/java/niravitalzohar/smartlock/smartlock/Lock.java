@@ -68,4 +68,5 @@ public class Lock {
     public void setMemberCode(String memberCode) {
         this.memberCode = memberCode;
     }
+
 }

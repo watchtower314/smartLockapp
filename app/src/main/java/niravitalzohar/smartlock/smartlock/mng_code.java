@@ -1,5 +1,6 @@
 package niravitalzohar.smartlock.smartlock;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,6 +25,8 @@ public class mng_code extends AppCompatActivity {
     private EditText lockidET;
     private Button v_button;
     private String permissionType;
+    private ProgressDialog pDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +36,12 @@ public class mng_code extends AppCompatActivity {
         lockidET=(EditText)findViewById(R.id.lockidET) ;
         v_button=(Button)findViewById(R.id.v_button);
 
-       // permissionType = getIntent().getStringExtra("PermissionType");
+        // Progress dialog
+        pDialog = new ProgressDialog(this);
+        pDialog.setCancelable(false);
+
+
+        // permissionType = getIntent().getStringExtra("PermissionType");
         //Log.d("kk",permissionType);
 
         v_button.setOnClickListener(new View.OnClickListener() {
@@ -46,15 +54,13 @@ public class mng_code extends AppCompatActivity {
 
                 Log.d("kkk",lockid);
 
-                getlock(lockid);
+                Intent intent = new Intent(getBaseContext(), SignUp.class);
+                intent.putExtra("lockid",lockid);
+                startActivity(intent);
+
+              //  getlock(lockid);
 
 
-              //  Intent intent = new Intent(mng_code.this,
-                //        SignUp.class);
-                //startActivity(intent);
-
-                //get phone number and lock id and check if match , pass to sign up activity flag of manger
-                // mPopupWindow.dismiss();
 
             }
         });
@@ -63,6 +69,8 @@ public class mng_code extends AppCompatActivity {
     }
 
     public void getlock(final String lockid){
+        pDialog.setMessage("verifing login details ...");
+        AppConfig.showDialog(pDialog);
 
         String uri="https://smartlockproject.herokuapp.com/api/getLock/"+lockid;
 
@@ -103,7 +111,11 @@ public class mng_code extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(mng_code.this,error.getMessage(),Toast.LENGTH_LONG).show();
+                      //  Toast.makeText(mng_code.this,error.getMessage(),Toast.LENGTH_LONG).show();
+                        String errorMsg ="cant find the lock please contact us by email";
+                        Toast.makeText(getApplicationContext(),
+                                errorMsg, Toast.LENGTH_LONG).show();
+                        AppConfig.hideDialog(pDialog);
                     }
                 });
 

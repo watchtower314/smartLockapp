@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -31,6 +32,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+import com.android.volley.Request;
 import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -52,8 +54,8 @@ public class Login extends AppCompatActivity {
     private EditText password;
     private ProgressDialog pDialog;
     private SessionManager session;
-    private SQLiteHandler db;
-    private TextView new_member,new_mng;
+   // private SQLiteHandler db;
+    private TextView new_member,new_mng,forgot;
     private String lockid;
 
 
@@ -80,6 +82,7 @@ public class Login extends AppCompatActivity {
         password = (EditText) findViewById(R.id.passwordET);
         new_member = (TextView) findViewById(R.id.newmember);
         new_mng=(TextView) findViewById(R.id.newMngr);
+        forgot=(TextView)findViewById(R.id.forgot);
         Button signin = (Button) findViewById(R.id.signin);
 
 
@@ -88,7 +91,7 @@ public class Login extends AppCompatActivity {
         pDialog.setCancelable(false);
 
         // SQLite database handler
-        db = new SQLiteHandler(getApplicationContext());
+       // db = new SQLiteHandler(getApplicationContext());
 
         // Session manager
         session = new SessionManager(getApplicationContext());
@@ -110,7 +113,8 @@ public class Login extends AppCompatActivity {
                 // Check for empty data in the form
                 if (!Iemail.isEmpty() && !Ipassword.isEmpty()) {
                     // login user
-                    check(Iemail,Ipassword);
+                  //  check(Iemail,Ipassword);
+                    loginFunc(Iemail,Ipassword);
                 } else {
                     // Prompt user to enter credentials
                     Toast.makeText(getApplicationContext(),
@@ -140,7 +144,7 @@ public class Login extends AppCompatActivity {
             public void onClick(View view) {
                 Log.d("jhh","hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
       //          openPopupMng();
-                SQLiteHandler.CURRENT_PERMISSION_TYPE=MANGER;
+                AppConfig.CURRENT_PERMISSION_TYPE=MANGER;
                 Intent intent = new Intent(getBaseContext(), mng_code.class);
                 //intent.putExtra("PermissionType","manager");
                 startActivity(intent);
@@ -151,172 +155,90 @@ public class Login extends AppCompatActivity {
 
 
 
+
+
     }//end on create
-    /*
-   public void  openPopupMng(){
 
-        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
-        View customView = inflater.inflate(R.layout.mng_pop,null);
-
-        mPopupWindow = new PopupWindow(
-                customView,
-                LinearLayout.LayoutParams.MATCH_PARENT, //width
-                LinearLayout.LayoutParams.WRAP_CONTENT//height
-        );
-
-        if(Build.VERSION.SDK_INT>=21){
-            mPopupWindow.setElevation(5.0f);
-        }
-        mPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-
-     //   mLinearLayout=(LinearLayout)customView.findViewById(R.id.mng_popLayout) ;
-     //   phone_mng=(TextView)findViewById(R.id.phone_mng);
-      // phone_mngET=(EditText)findViewById(R.id.phone_mngET);
-        lockidTv=(TextView)customView.findViewById(R.id.lockidTV) ;
-        lockidET=(EditText) customView.findViewById(R.id.lockidET) ;
-      v_button=(Button)customView.findViewById(R.id.v_button);
-
-
-       v_button.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                String lockid=lockidET.getText().toString().trim();
-                Log.d("kkk",lockid);
-
-
-                Intent intent = new Intent(Login.this,
-                       SignUp.class);
-                startActivity(intent);
-
-                //get phone number and lock id and check if match , pass to sign up activity flag of manger
-               // mPopupWindow.dismiss();
-
-            }
-        });
-
-
-
-
-
-       mPopupWindow.showAtLocation(mLinearLayout, Gravity.CENTER,0,0);
-
-
-
-    } //popup2 end
-    */
-
-    public void check(final String Iemail, final String Ipassword){
-      //  String uid="58e91fd7fafa6700044b8d61";
-        /*String uri = String.format("https://smartlockproject.herokuapp.com/api/getUser?param1=%1$s",
-                uid);*/
+    public void loginFunc(final String Iemail, final String Ipassword){
+        String tag_string_req = "req_login";
         pDialog.setMessage("verifing login details ...");
         showDialog();
-        String uri="https://smartlockproject.herokuapp.com/api/getUser/"+Iemail;
 
-        final StringRequest stringRequest = new StringRequest(uri,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d("RESPONSE", "login chk Response: " + response.toString());
-                        //  showJSON(response);
-                        try {
-                            JSONObject jsonObj = new JSONObject(response);
-                            JSONObject c = jsonObj.getJSONObject("message");
-                            String password = c.getString("password");
-                            Log.d("login password",password);
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.LOGIN_URL, new Response.Listener<String>() {
 
+            @Override
+            public void onResponse(String response) {
+                Log.d("bnnjjj", "Login Response: " + response.toString());
+                //  hideDialog();
 
-                            if (Ipassword.equals(password)) {
-                                SQLiteHandler.CURRENT_USERNAME=Iemail;
-                                //chkUserType(Iemail);
-                                Intent intent = new Intent(Login.this,
-                                            UsersLocks.class);
-                               // intent.putExtra("username", Iemail);
-                                startActivity(intent);
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    String status=jObj.getString("status");
 
-                            }
-                            else {
-                                String passError="no valid password plese try again";
-                                Toast.makeText(getApplicationContext(),
-                                        passError, Toast.LENGTH_LONG).show();
-                                hideDialog();
+                    if(status.equals("success")){
+                         JSONObject c = jObj.getJSONObject("message");
+                        String token=c.getString("token");
+                        Log.d("token",token);
 
 
-                            }
+                        Toast.makeText(getApplicationContext(), "User logged in successfully", Toast.LENGTH_LONG).show();
+                        AppConfig.CURRENT_USERNAME=Iemail;
+                        AppConfig.TOKEN=token;
+                        Intent intent = new Intent(Login.this,
+                                UsersLocks.class);
+                        startActivity(intent);
 
+                        // Launch login activity
 
-
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                    } else {
+                        String msg=jObj.getString("message");
+                        String passError=msg;
+                        if(msg.equals("Need to verify mail first")){
+                            Intent intent = new Intent(Login.this,
+                                    RegCode.class);
+                            intent.putExtra("username",Iemail);
+                            startActivity(intent);
 
                         }
-
-                    }//end on response
-                },
-                new Response.ErrorListener() {
-                    @Override
-
-                    public void onErrorResponse(VolleyError error) {
-                        String errorMsg ="login failed please try again";
-                      //  Toast.makeText(Login.this,error.getMessage(),Toast.LENGTH_LONG).show();
                         Toast.makeText(getApplicationContext(),
-                                errorMsg, Toast.LENGTH_LONG).show();
+                                passError, Toast.LENGTH_LONG).show();
                         hideDialog();
                     }
-                });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
+            }
+        }, new Response.ErrorListener() {
 
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("GJKKK", "Registration Error: " + error.getMessage());
+                String errorMsg ="login failed please try again";
+                Toast.makeText(getApplicationContext(),
+                        errorMsg, Toast.LENGTH_LONG).show();
+                  hideDialog();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+
+                // Posting params to register url
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("username", Iemail);
+                params.put("password", Ipassword);
+
+                return params;
+            }
+
+        };
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
-    public void chkUserType(String email){
-        String uri="https://smartlockproject.herokuapp.com/api/getPermission/"+email+"/"+SQLiteHandler.CURRENT_LOCKID;
-
-        final StringRequest stringRequest = new StringRequest(uri,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d("RESPONSE", "permission response: " + response.toString());
-                        //  showJSON(response);
-                        try {
-                            JSONObject jsonObj = new JSONObject(response);
-                            int type = jsonObj.getInt("type");
-                            Log.d("type",Integer.toString(type));
-
-                            if ((SQLiteHandler.CURRENT_PERMISSION_TYPE).ordinal() == type) {
-                                //  Intent intent = new Intent(SignUp.this,
-                                //        Login.class);
-                                //startActivity(intent);
-                            }
-                            else{
-                                pDialog.setMessage("your permission is "+type);
-                                showDialog();
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }//end on response
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(Login.this,error.getMessage(),Toast.LENGTH_LONG).show();
-                    }
-                });
-
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-
-
-
-    }
 
     private void showDialog() {
         if (!pDialog.isShowing())
@@ -333,6 +255,20 @@ public class Login extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_menu_screen, menu);
         return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch(item.getItemId()){
+            case R.id.help:
+                Intent intent = new Intent(Login.this,
+                        Help.class);
+                startActivity(intent);
+
+                return true;
+
+        }
+
+        return false;
     }
 
 

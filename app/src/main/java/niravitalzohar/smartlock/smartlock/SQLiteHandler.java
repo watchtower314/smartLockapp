@@ -17,9 +17,10 @@ import java.util.HashMap;
 
 public class SQLiteHandler extends SQLiteOpenHelper {
 
-    public static permission_type CURRENT_PERMISSION_TYPE;
+    /*public static permission_type CURRENT_PERMISSION_TYPE;
     public static String CURRENT_LOCKID;
     public static String CURRENT_USERNAME;
+    public static String TOKEN;*/
 
 
     private static final String TAG = SQLiteHandler.class.getSimpleName();

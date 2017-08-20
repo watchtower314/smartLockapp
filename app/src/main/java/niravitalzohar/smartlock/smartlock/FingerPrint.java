@@ -36,6 +36,8 @@ public class FingerPrint extends AppCompatActivity {
     String lockid="18:fe:34:d4:c6:e8";
     String userid="58e91fd7fafa6700044b8d61";
     private ProgressDialog pDialog;
+    int count=0;
+    int flag=0;
 
 
     @Override
@@ -54,6 +56,7 @@ public class FingerPrint extends AppCompatActivity {
 
             public void onClick(View view) {
                 Log.d("add","adding fingerprint");
+                flag=1;
                 requestId.setLength(0);
                 String result= addFP2();
                 Log.d("result-lock",result);
@@ -68,7 +71,8 @@ public class FingerPrint extends AppCompatActivity {
         remove.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
-                Log.d("add","adding fingerprint");
+                Log.d("remove","remove fingerprint");
+                flag=2;
                 requestId.setLength(0);
                 String result= removeFP2();
                 Log.d("result-lock",result);
@@ -82,176 +86,7 @@ public class FingerPrint extends AppCompatActivity {
 
 
     }
-    /*
-    public void getAction(String result){
-        String uri="https://smartlockproject.herokuapp.com/api/checkLockAction/"+result;
-        do{
-            final StringRequest stringRequest = new StringRequest(uri,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            Log.d("RESPONSE", "chk mnger for lock response: " + response.toString());
-                            //  showJSON(response);
-                            try {
-                                JSONObject jsonObj = new JSONObject(response);
-                                l_status=jsonObj.getString("status");
-                                if(l_status.equals("lock")){
 
-                                }
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                        }//end on response
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(FingerPrint.this,error.getMessage(),Toast.LENGTH_LONG).show();
-                        }
-                    });
-
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
-            requestQueue.add(stringRequest);
-
-        }
-        while(l_status.equals("unhandle"));
-    }
-    public String  addFP(){
-
-        String tag_string_req = "req_lock";
-
-        StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.ADD_FINGER_PRINT, new Response.Listener<String>() {
-
-            @Override
-            public void onResponse(String response) {
-                Log.d("bnnjjj", "LOCK Response: " + response.toString());
-                //  hideDialog();
-
-                try {
-                    JSONObject jObj = new JSONObject(response);
-                    String status=jObj.getString("status");
-                    requestId=jObj.getString("requestId");
-                    Log.d("REQid",requestId);
-
-                    if(status.equals("request created")){
-
-                        Toast.makeText(getApplicationContext(), "FINGERPRINT ADDED ", Toast.LENGTH_LONG).show();
-
-                        // Launch login activity
-
-                    } else {
-
-                        // Error occurred in registration. Get the error
-                        // message
-                        String errorMsg = status;
-                        Toast.makeText(getApplicationContext(),
-                                errorMsg, Toast.LENGTH_LONG).show();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("GJKKK", "LOCK Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
-                //  hideDialog();
-            }
-        }) {
-
-            @Override
-            protected Map<String, String> getParams() {
-                // Posting params to unlock url
-                Map<String, String> params = new HashMap<String, String>();
-              //  params.put("lockId", SQLiteHandler.CURRENT_LOCKID);
-                params.put("lockId", "18:fe:34:d4:c6:e8");
-                params.put("username", SQLiteHandler.CURRENT_USERNAME);
-
-                return params;
-            }
-
-        };
-
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-        Log.d("REQid",requestId);
-        return requestId;//// TODO: 08/05/2017 chk if really changing
-
-    }
-    public String  removeFP() {
-
-        String tag_string_req = "req_lock";
-
-        StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.REMOVE_FINGER_PRINT, new Response.Listener<String>() {
-
-            @Override
-            public void onResponse(String response) {
-                Log.d("bnnjjj", "REMOVEFP Response: " + response.toString());
-                //  hideDialog();
-
-                try {
-                    JSONObject jObj = new JSONObject(response);
-                    String status = jObj.getString("status");
-                    requestId = jObj.getString("requestId");
-                    Log.d("REQid", requestId);
-
-                    if (status.equals("request created")) {
-
-                        Toast.makeText(getApplicationContext(), "FINGERPRINT REMOVED ", Toast.LENGTH_LONG).show();
-
-                        // Launch login activity
-
-                    } else {
-
-                        // Error occurred in registration. Get the error
-                        // message
-                        String errorMsg = status;
-                        Toast.makeText(getApplicationContext(),
-                                errorMsg, Toast.LENGTH_LONG).show();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("GJKKK", "RENOVEFP Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
-                //  hideDialog();
-            }
-        }) {
-
-            @Override
-            protected Map<String, String> getParams() {
-                // Posting params to unlock url
-                Map<String, String> params = new HashMap<String, String>();
-               // params.put("lockId", SQLiteHandler.CURRENT_LOCKID);
-                params.put("userId","58e91fd7fafa6700044b8d61");
-                params.put("lockId", "18:fe:34:d4:c6:e8");
-               // params.put("username", SQLiteHandler.CURRENT_USERNAME);
-
-                return params;
-            }
-
-        };
-
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-        Log.d("REQid", requestId);
-        return requestId;////TODO chk result
-    }*/
 
     public String removeFP2(){
 
@@ -307,8 +142,9 @@ public class FingerPrint extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("GJKKK", "LOCK Error: " + error.getMessage());
+                String errorMsg ="error you might no have permission for this action: ask lock manger for help ";
                 Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
+                        errorMsg, Toast.LENGTH_LONG).show();
                 //  hideDialog();
             }
         }) {
@@ -320,9 +156,9 @@ public class FingerPrint extends AppCompatActivity {
 
                 // params.put("lockId", SQLiteHandler.CURRENT_LOCKID);
                 Log.d("lockid",lockid);
-                params.put("username",SQLiteHandler.CURRENT_USERNAME);
-                params.put("lockid",SQLiteHandler.CURRENT_LOCKID);
-              //  params.put("userId",userid);
+               // params.put("username",SQLiteHandler.CURRENT_USERNAME);
+                params.put("lockid",AppConfig.CURRENT_LOCKID);
+                params.put("token",AppConfig.TOKEN);
                // params.put("lockId",lockid);
 
                 // params.put("username", SQLiteHandler.CURRENT_USERNAME);
@@ -393,9 +229,11 @@ public class FingerPrint extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("GJKKK", "LOCK Error: " + error.getMessage());
+                String errorMsg ="error you might no have permission for this action: ask lock manger for help ";
+
                 Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
-                //  hideDialog();
+                        errorMsg, Toast.LENGTH_LONG).show();
+                  hideDialog();
             }
         }) {
 
@@ -406,12 +244,9 @@ public class FingerPrint extends AppCompatActivity {
 
                 // params.put("lockId", SQLiteHandler.CURRENT_LOCKID);
                 Log.d("lockid",lockid);
-                params.put("username",SQLiteHandler.CURRENT_USERNAME);
-                params.put("lockid",SQLiteHandler.CURRENT_LOCKID);
-               // params.put("userId",userid);
-               // params.put("lockId",lockid);
-
-                // params.put("username", SQLiteHandler.CURRENT_USERNAME);
+               // params.put("username",SQLiteHandler.CURRENT_USERNAME);
+                params.put("lockid",AppConfig.CURRENT_LOCKID);
+                params.put("token",AppConfig.TOKEN);
 
                 return params;
             }
@@ -429,9 +264,12 @@ public class FingerPrint extends AppCompatActivity {
         Log.d("result", result);
         pDialog.setMessage("waiting for checking ...");
         showDialog();
+       // count++;
 
 
-        String uri = "https://smartlockproject.herokuapp.com/api/checkLockAction/" + result;
+
+        String uri = "https://smartlockproject.herokuapp.com/api/checkLockAction/" + result+
+                "?token="+AppConfig.TOKEN;
         final StringRequest stringRequest = new StringRequest(uri,
                 new Response.Listener<String>() {
                     @Override
@@ -456,12 +294,26 @@ public class FingerPrint extends AppCompatActivity {
 
                             }
                             else if (l_status.equals("done")) {
-                                Toast.makeText(getApplicationContext(), "User's  fingerPrint successfully removed!", Toast.LENGTH_LONG).show();
-
+                               /* if(flag==1) {
+                                    Toast.makeText(getApplicationContext(), "User's  fingerPrint successfully added!", Toast.LENGTH_LONG).show();
+                                }
+                                else if(flag==2){
+                                    Toast.makeText(getApplicationContext(), "User's  fingerPrint successfully removed!", Toast.LENGTH_LONG).show();
+                                }*/
+                                Toast.makeText(getApplicationContext(), "request success!", Toast.LENGTH_LONG).show();
+                                hideDialog();
                             }
-                            else {
-                                Log.d("here", "hereee");
-                                getAction2(result);
+                            else if((l_status.equals("timeout")) ){
+                                String errorMsg ="oops something went wrong please try again- timeout error";
+                                Toast.makeText(getApplicationContext(),
+                                        errorMsg, Toast.LENGTH_LONG).show();
+                                hideDialog();
+                            }
+                             //   Log.d("here","hereee"+count);
+                             //   if(count<35)
+
+                               else{
+                            getAction2(result);
                             }
 
 
@@ -477,7 +329,8 @@ public class FingerPrint extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(FingerPrint.this, error.getMessage(), Toast.LENGTH_LONG).show();
+                            String errorMsg ="oops something went wrong please try again";
+                        Toast.makeText(FingerPrint.this, errorMsg, Toast.LENGTH_LONG).show();
                         hideDialog();
                     }
                 });
@@ -491,8 +344,8 @@ public class FingerPrint extends AppCompatActivity {
 
 //TODO delete this
     public void removeFingerPrint(){
-        String uri="https://smartlockproject.herokuapp.com/api/removePhysicalId/"+SQLiteHandler.CURRENT_USERNAME+"/"+
-                SQLiteHandler.CURRENT_LOCKID+"/";
+        String uri="https://smartlockproject.herokuapp.com/api/removePhysicalId/"+AppConfig.CURRENT_USERNAME+"/"+
+                AppConfig.CURRENT_LOCKID+"/";
 
 
         final StringRequest stringRequest = new StringRequest(Request.Method.PUT,uri,
@@ -546,8 +399,8 @@ public class FingerPrint extends AppCompatActivity {
     public void addFingerPrint(){
         //https://smartlockproject.herokuapp.com/api/updatePhysicalId/:userid/:lockid/:physicalId
 
-        String uri="https://smartlockproject.herokuapp.com/api/updatePhysicalId/"+SQLiteHandler.CURRENT_USERNAME+"/"+
-                SQLiteHandler.CURRENT_LOCKID+"/";
+        String uri="https://smartlockproject.herokuapp.com/api/updatePhysicalId/"+AppConfig.CURRENT_USERNAME+"/"+
+                AppConfig.CURRENT_LOCKID+"/";
 
 
         final StringRequest stringRequest = new StringRequest(Request.Method.PUT,uri,
@@ -663,12 +516,9 @@ public class FingerPrint extends AppCompatActivity {
 
                 // params.put("lockId", SQLiteHandler.CURRENT_LOCKID);
                 Log.d("lockid",lockid);
-                params.put("username",SQLiteHandler.CURRENT_USERNAME);
-                params.put("lockid",SQLiteHandler.CURRENT_LOCKID);
-              //  params.put("userId",userid);
-              //  params.put("lockId",lockid);
-
-                // params.put("username", SQLiteHandler.CURRENT_USERNAME);
+              //  params.put("username",SQLiteHandler.CURRENT_USERNAME);
+                params.put("lockid",AppConfig.CURRENT_LOCKID);
+                params.put("token",AppConfig.TOKEN);
 
                 return params;
             }
@@ -696,16 +546,36 @@ public class FingerPrint extends AppCompatActivity {
                 Log.d("result-lock",result);
                 return true;
 
-
             case R.id.printf:
                 Intent intent = new Intent(FingerPrint.this,
                         FingerPrint.class);
                 startActivity(intent);
+                return true;
+
+            case R.id.setting:
+                Intent intent2 = new Intent(FingerPrint.this,
+                        Settings.class);
+                startActivity(intent2);
 
                 return true;
 
+            case R.id.home:
+                if(AppConfig.CURRENT_PERMISSION_TYPE==MANGER) {
+                    Intent intent3 = new Intent(FingerPrint.this,
+                            MngUsers.class);
+                    startActivity(intent3);
+                }
+                else{
+                    Intent intent4 = new Intent(FingerPrint.this,
+                            MemberLanding.class);
+                    startActivity(intent4);
+                }
+
+                return true;
 
         }
+
+
 
         return false;
     }

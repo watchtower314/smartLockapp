@@ -8,9 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -39,8 +41,11 @@ public class SignUp extends AppCompatActivity {
     private Button signup;
     private ProgressDialog pDialog;
     private SessionManager session;
-    private SQLiteHandler db;
-    private boolean flag =false;
+    //private SQLiteHandler db;
+    //private boolean flag =false;
+    private boolean flag =true; // there is manger
+    private TextView already;
+
     private String lockid=" ";
 
 
@@ -48,7 +53,7 @@ public class SignUp extends AppCompatActivity {
 public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_sign_up);
-        if (SQLiteHandler.CURRENT_PERMISSION_TYPE==MANGER) {
+        if (AppConfig.CURRENT_PERMISSION_TYPE==MANGER) {
             lockid = getIntent().getStringExtra("lockid");
             Log.d("kk", lockid);
         }
@@ -59,6 +64,7 @@ public void onCreate(Bundle savedInstanceState) {
     _email = (EditText) findViewById(R.id.emailET);
     _phone = (EditText) findViewById(R.id.phoneEt);
     signup = (Button) findViewById(R.id.signup);
+        already=(TextView)findViewById(R.id.alredy);
 
     // Progress dialog
     pDialog = new ProgressDialog(this);
@@ -68,7 +74,7 @@ public void onCreate(Bundle savedInstanceState) {
     session = new SessionManager(getApplicationContext());
 
     // SQLite database handler
-    db = new SQLiteHandler(getApplicationContext());
+   // db = new SQLiteHandler(getApplicationContext());
 
     // Check if user is already logged in or not
     if (session.isLoggedIn()) {
@@ -88,16 +94,23 @@ public void onCreate(Bundle savedInstanceState) {
             String phone = _phone.getText().toString().trim();
 
             if (!phone.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
-                   if( checkLockManger(lockid)==false) {//if its false therefore there is no manger for this lock and i want to chek if he acctally can create manger accont
-                      Log.d("flag", String.valueOf(flag));
-                      addPermission(email,lockid);
-                   }
+                //  if( checkLockManger(lockid)==false) {//if its false therefore there is no manger for this lock and i want to chek if he acctally can create manger accont
+               // if( checkLockManger(lockid)==true) { //there is no manger
+                 //     Log.d("flag", String.valueOf(flag));
+                  //   addPermission(email,lockid);
+              //     }
                /*   else {
                        //if there is manger for this lock chk if user have the right permissio
                        checkUserPermission(email,lockid);
                    }*/
+                  if(AppConfig.CURRENT_PERMISSION_TYPE==MANGER) {
+                      openMngAccount(email,lockid,password,phone);
+                   }
                 //either way add this user
-                registerUser(email,phone, password);
+                //TODO cus i dont add permission by myself it wont show the lock cus he dosent have any permission to this lock
+                 else {
+                      registerUser(email, phone, password);
+                  }
             } else {
                 Toast.makeText(getApplicationContext(),
                         "Please enter your details!", Toast.LENGTH_LONG)
@@ -106,7 +119,94 @@ public void onCreate(Bundle savedInstanceState) {
         }
     });
 
+        already.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+
+                // Launch login activity
+
+                Intent intent = new Intent(
+                        SignUp.this,
+                        Login.class);
+                startActivity(intent);
+
+            }
+
+        });
+
   } //end onCreate
+
+    public void openMngAccount(final String Iemail, final String Ilockid, final String Ipassword, final String Iphone){
+        String tag_string_req = "openMngAccount";
+        //final String lockid="323djdjw32";
+        //final String userid="58e91fd7fafa6700044b8d61";
+
+          pDialog.setMessage("opening account ...");
+         showDialog();
+
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.OPEN_MNG_ACCOUNT, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d("bnnjjj", "Add permission Response: " + response.toString());
+                 hideDialog();
+
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    String status=jObj.getString("status");
+                    if(status.equals("success")){
+
+                        Toast.makeText(getApplicationContext(), "New account successfully was created y login now!", Toast.LENGTH_LONG).show();
+
+                        // Launch login activity
+
+                        Intent intent = new Intent(
+                                SignUp.this, RegCode.class);
+                        intent.putExtra("username",Iemail);
+                                //Login.class);
+                        startActivity(intent);
+
+                    } else {
+
+                        // Error occurred in registration. Get the error
+                        // message
+                        String errorMsg = status;
+                        Toast.makeText(getApplicationContext(),
+                                errorMsg, Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("GJKKK", "Registration Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_LONG).show();
+                //  hideDialog();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting params to register url
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("username",Iemail);
+                params.put("lockid", Ilockid);
+                params.put("password", Ipassword);
+                params.put("phone", Iphone);
+                return params;
+            }
+
+        };
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+
+    }
 
         public void addPermission(final String email,final String lockid){
             String tag_string_req = "req_register";
@@ -214,10 +314,12 @@ public void onCreate(Bundle savedInstanceState) {
                             String status=jsonObj.getString("status");
                                 if(status.equals("success")){
                                 //// TODO: 05/05/2017 return true
-                                    flag=true;
+                                  //  flag=true;
+                                    flag=false;
                                     Log.d("flag chn sign up here ",String.valueOf(flag));
 
                                 }
+
 
 
                            // int type = jsonObj.getInt("type");
@@ -274,7 +376,7 @@ public void onCreate(Bundle savedInstanceState) {
                             int type = jsonObj.getInt("type");
                             Log.d("type",Integer.toString(type));
 
-                            if ((SQLiteHandler.CURRENT_PERMISSION_TYPE).ordinal() == type) {
+                            if ((AppConfig.CURRENT_PERMISSION_TYPE).ordinal() == type) {
                               //  Intent intent = new Intent(SignUp.this,
                                 //        Login.class);
                                 //startActivity(intent);
@@ -347,15 +449,16 @@ public void onCreate(Bundle savedInstanceState) {
                           //      .getString("created_at");
 
                         // Inserting row in users table
-                        User user=new User(uid,phone,password,username);
-                        db.addUser(user);
+                        //User user=new User(uid,phone,password,username);
+                        //db.addUser(user);
 
                         Toast.makeText(getApplicationContext(), "User successfully registered. Try login now!", Toast.LENGTH_LONG).show();
 
                         // Launch login activity
                         Intent intent = new Intent(
-                                SignUp.this,
-                                Login.class);
+                                SignUp.this, RegCode.class);
+                        intent.putExtra("username",username);
+                               // Login.class);
                         startActivity(intent);
                         finish();
                     } else {
@@ -413,6 +516,20 @@ public void onCreate(Bundle savedInstanceState) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_rest, menu);
         return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch(item.getItemId()){
+            case R.id.help:
+                Intent intent = new Intent(SignUp.this,
+                        Help.class);
+                startActivity(intent);
+
+                return true;
+
+        }
+
+        return false;
     }
 
 

@@ -35,6 +35,7 @@ public class MemberLanding extends AppCompatActivity {
     String lockid="18:fe:34:d4:c6:e8";
     String userid="58e91fd7fafa6700044b8d61";
     private ProgressDialog pDialog;
+    int count=0;
 
 
 
@@ -43,7 +44,9 @@ public class MemberLanding extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_member_landing);
         name=(TextView)findViewById(R.id.loggedName);
-        name.setText(SQLiteHandler.CURRENT_USERNAME);
+        name.setText(AppConfig.CURRENT_USERNAME);
+
+
 
         lock=(ImageView)findViewById(R.id.chkStatus);
         fingerPrint=(ImageView)findViewById(R.id.fingerPrint);
@@ -79,10 +82,12 @@ public class MemberLanding extends AppCompatActivity {
         info.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
+                getUser();
 
-              //  Intent intent = new Intent(MemberLanding.this, mng_code.class);
+
+               // Intent intent = new Intent(MemberLanding.this, UserDetails.class);
                 // intent.putExtra("PermissionType","member");
-             //   startActivity(intent);
+              //  startActivity(intent);
             }
 
         });
@@ -90,12 +95,57 @@ public class MemberLanding extends AppCompatActivity {
 
 
     }
+
+
+    public void getUser(){
+        //String uri="https://smartlockproject.herokuapp.com/api/getUser/"+AppConfig.CURRENT_USERNAME+
+         //       "?token="+AppConfig.TOKEN;
+        final String uri="https://smartlockproject.herokuapp.com/api/getUser?token="+AppConfig.TOKEN;
+
+
+        final StringRequest stringRequest = new StringRequest(uri,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("RESPONSE", "get user  response: " + response.toString());
+                        //  showJSON(response);
+                        try {
+                            JSONObject jsonObj = new JSONObject(response);
+                            JSONObject c = jsonObj.getJSONObject("message");
+                           String phone = c.getString("phone");
+                            Log.d("phone",phone);
+                            Intent intent = new Intent(MemberLanding.this, UserDetails.class);
+                             intent.putExtra("phone",phone);
+                            startActivity(intent);
+
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }//end on response
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(MemberLanding.this,error.getMessage(),Toast.LENGTH_LONG).show();
+                    }
+                });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+
+    }
     public String getAction2(final String result) {
         Log.d("result", result);
         pDialog.setMessage("waiting for checking ...");
         showDialog();
+        //count++;
 
-        String uri = "https://smartlockproject.herokuapp.com/api/checkLockAction/" + result;
+
+        String uri = "https://smartlockproject.herokuapp.com/api/checkLockAction/" + result+
+                "?token="+AppConfig.TOKEN;
         final StringRequest stringRequest = new StringRequest(uri,
                 new Response.Listener<String>() {
                     @Override
@@ -118,8 +168,13 @@ public class MemberLanding extends AppCompatActivity {
                                         OpenLock.class);
                                 startActivity(intent);
 
-                            } else {
-                                Log.d("here", "hereee");
+                            } else if((l_status.equals("timeout")) ){
+                                String errorMsg ="oops something went wrong please try again-timeout error";
+                                Toast.makeText(getApplicationContext(),
+                                        errorMsg, Toast.LENGTH_LONG).show();
+                                hideDialog();
+                            }
+                            else{
                                 getAction2(result);
                             }
 
@@ -136,7 +191,8 @@ public class MemberLanding extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(MemberLanding.this, error.getMessage(), Toast.LENGTH_LONG).show();
+                        String errorMsg ="oops something went wrong please try again";
+                        Toast.makeText(MemberLanding.this, errorMsg, Toast.LENGTH_LONG).show();
                         hideDialog();
 
                     }
@@ -216,9 +272,9 @@ public class MemberLanding extends AppCompatActivity {
 
                 // params.put("lockId", SQLiteHandler.CURRENT_LOCKID);
                 Log.d("lockid",lockid);
-                params.put("username",SQLiteHandler.CURRENT_USERNAME);
-                params.put("lockid",SQLiteHandler.CURRENT_LOCKID);
-               // params.put("userId",userid);
+                //params.put("username",SQLiteHandler.CURRENT_USERNAME);
+                params.put("lockid",AppConfig.CURRENT_LOCKID);
+                params.put("token",AppConfig.TOKEN);
                 //params.put("lockId",lockid);
 
                 // params.put("username", SQLiteHandler.CURRENT_USERNAME);
@@ -256,6 +312,19 @@ public class MemberLanding extends AppCompatActivity {
                 startActivity(intent);
 
                 return true;
+            case R.id.setting:
+                Intent intent2 = new Intent(MemberLanding.this,
+                        Settings.class);
+                startActivity(intent2);
+
+                return true;
+
+            case R.id.home:
+                Intent intent3 = new Intent(MemberLanding.this,
+                        MngUsers.class);
+                startActivity(intent3);
+
+                return true;
 
 
         }
@@ -274,7 +343,7 @@ public class MemberLanding extends AppCompatActivity {
     }
 
     public void chkLockStatus(){
-        String uri="https://smartlockproject.herokuapp.com/api/getLock/"+SQLiteHandler.CURRENT_LOCKID;
+        String uri="https://smartlockproject.herokuapp.com/api/getLock/"+AppConfig.CURRENT_LOCKID;
 
         final StringRequest stringRequest = new StringRequest(uri,
                 new Response.Listener<String>() {

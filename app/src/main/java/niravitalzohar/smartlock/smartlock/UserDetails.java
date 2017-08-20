@@ -3,7 +3,10 @@ package niravitalzohar.smartlock.smartlock;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -18,6 +21,10 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 
 import static niravitalzohar.smartlock.smartlock.permission_type.MANGER;
 import static niravitalzohar.smartlock.smartlock.permission_type.MEMBER;
@@ -35,6 +42,9 @@ public class UserDetails extends AppCompatActivity {
     private String phone=" ";
     private String[] startTime;
     private String[] endTime;
+    private String part2="";
+    private String part4="";
+
 
 
 
@@ -42,81 +52,78 @@ public class UserDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_details);
+        if(AppConfig.CURRENT_PERMISSION_TYPE==MANGER) {
 
-        String details = getIntent().getStringExtra("userD");
-         Log.d("kk",details);
+            name=getIntent().getStringExtra("name");
+            phone=getIntent().getStringExtra("phone");
+
+        }
+        else{
+            //part4=SQLiteHandler.CURRENT_USERNAME;
+            name=AppConfig.CURRENT_USERNAME;
+            Log.d("name",name);
+            phone=getIntent().getStringExtra("phone");
+
+            //part2=getIntent().getStringExtra("Uphone");
+
+            // getUser(part4);
+           Log.d("phone",phone);
+
+        }
+       // name = part4;
+      //  phone = part2;
 
         startTime = new String[]{"0","0","0","0","0","0","0"};
         endTime = new String[]{"0","0","0","0","0","0","0"};
 
-        //TODO change this logic
-        String[] parts = details.split(",\\s*");
-        String part1 = parts[0]; // 004
-        String part2 = parts[1]; // 034556
-
-        Log.d("kk",part1);
-        Log.d("kk",part2);
-
-        parts=part1.split("=");
-        String []parts2=part2.split("=");
-        part1 = parts[0];
-        part2 = parts[1];
-        String part3=parts2[0];
-        String part4=parts2[1];
-
-        Log.d("kk",part1);
-        Log.d("kk",part2);
-        Log.d("kk",part3);
-        Log.d("kk",part4);
-
-        name=part4;
-        phone=part2;
-// till here
-
         TVusername=(TextView) findViewById(R.id.useremail);
-        TVusername.setText(part4);
+        TVusername.setText(name);
 
         TVuserphone=(TextView) findViewById(R.id.userphone);
-        TVuserphone.setText(part2);
+        TVuserphone.setText(phone);
 
         userpermission=(TextView)findViewById(R.id.userpermission);
+        userpermission.setMovementMethod(new ScrollingMovementMethod());
         change_bt=(ImageView)findViewById(R.id.change_bt);
 
-        getuserPermission(part4);
+        getuserPermission(name);
 
         change_bt.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
-                if (SQLiteHandler.CURRENT_PERMISSION_TYPE!=MANGER){
+                if (AppConfig.CURRENT_PERMISSION_TYPE!=MANGER){
                     Intent intent = new Intent(getBaseContext(), MemberChangeD.class);
                     intent.putExtra("name", name);
                     intent.putExtra("phone", phone);
                     startActivity(intent);
 
                 }
-                if (frequency.equals("once")) {
+                //if its manger
+               else {
+                    if (frequency.equals("once")) {
 
-                    Intent intent = new Intent(getBaseContext(), ChangeDetails.class);
-                    intent.putExtra("name", name);
-                    intent.putExtra("phone", phone);
-                    intent.putExtra("freq", frequency);
-                    intent.putExtra("date", date);
-                    intent.putExtra("start", start);
-                    intent.putExtra("end", end);
-                    startActivity(intent);
-                }
-                else if(frequency.equals("always")){
-                    date="null";
-                    Intent intent = new Intent(getBaseContext(), ChangeDetails.class);
-                    intent.putExtra("name", name);
-                    intent.putExtra("phone", phone);
-                    intent.putExtra("freq", frequency);
-                    intent.putExtra("date", date);
-                    intent.putExtra("start", startTime);
-                    intent.putExtra("end", endTime);
-                    startActivity(intent);
+                        Intent intent = new Intent(getBaseContext(), ChangeDetails.class);
+                        intent.putExtra("name", name);
+                        intent.putExtra("phone", phone);
+                        intent.putExtra("freq", frequency);
+                        intent.putExtra("date", date);
+                        intent.putExtra("start", start);
+                        intent.putExtra("end", end);
+                        startActivity(intent);
+                    } else if (frequency.equals("always")) {
+                        date = "null";
+                        Intent intent = new Intent(getBaseContext(), ChangeDetails.class);
+                        intent.putExtra("name", name);
+                        intent.putExtra("phone", phone);
+                        intent.putExtra("freq", frequency);
+                        intent.putExtra("date", date);
+                        intent.putExtra("start", startTime);
+                        intent.putExtra("end", endTime);
+                        startActivity(intent);
 
+                    }
                 }
+
             }
 
            });
@@ -125,10 +132,14 @@ public class UserDetails extends AppCompatActivity {
 
     }
 
+
+
     public void getuserPermission(String username){
        // String lockid="323djdjw32";
 
-        String uri="https://smartlockproject.herokuapp.com/api/getPermission/"+username+"/"+SQLiteHandler.CURRENT_LOCKID;
+        //String uri="https://smartlockproject.herokuapp.com/api/getPermission/"+username+"/"+SQLiteHandler.CURRENT_LOCKID;
+        String uri="https://smartlockproject.herokuapp.com/api/getPermission/"+username+"/"+AppConfig.CURRENT_LOCKID
+                +"?token="+AppConfig.TOKEN;
 
         final StringRequest stringRequest = new StringRequest(uri,
                 new Response.Listener<String>() {
@@ -173,8 +184,8 @@ public class UserDetails extends AppCompatActivity {
                                 startTime[1]=Monday.getString("start");
                                 endTime[1]=Monday.getString("end");
                                 JSONObject Sunday=duration.getJSONObject("Sunday");
-                                startTime[0]=Monday.getString("start");
-                                endTime[0]=Monday.getString("end");
+                                startTime[0]=Sunday.getString("start");
+                                endTime[0]=Sunday.getString("end");
                                 userpermission.setText("Frequency:  "+frequency+"\n"+
                                 "Sunday - "+"from "+startTime[0]+" to "+endTime[0]+"\n"+
                                  "Monday -"+"from "+startTime[1]+" to "+endTime[1]+"\n"+
@@ -210,4 +221,21 @@ public class UserDetails extends AppCompatActivity {
         requestQueue.add(stringRequest);
 
     }
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.help, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch(item.getItemId()){
+            case R.id.back:
+                finish();
+                return true;
+
+        }
+
+        return false;
+    }
+
 }

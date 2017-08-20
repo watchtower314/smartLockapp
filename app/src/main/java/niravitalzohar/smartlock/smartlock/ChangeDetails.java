@@ -63,6 +63,7 @@ public class ChangeDetails extends AppCompatActivity {
     int dayflag = 0;
 
 
+
     //for popup2
     private LinearLayout layout1, layout2, layout3;
     private Button b1, b2, b3, save2;
@@ -75,6 +76,8 @@ public class ChangeDetails extends AppCompatActivity {
     private String phone=" ";
     private String frequency=" ";
 
+    boolean flag=false;
+
 
 
 
@@ -84,6 +87,10 @@ public class ChangeDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_details);
+
+        pDialog = new ProgressDialog(this);
+        pDialog.setCancelable(false);
+
         startTime = new String[]{"0","0","0","0","0","0","0"};
         endTime = new String[]{"0","0","0","0","0","0","0"};
          username = getIntent().getStringExtra("name");
@@ -122,13 +129,17 @@ public class ChangeDetails extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup arg0, int id) {
                 switch (id) {
                     case R.id.manger:
+                        lockpermission.setVisibility(View.VISIBLE);
                         catgoryresult = permission_type.MANGER;
                         break;
                     case R.id.member:
+                        lockpermission.setVisibility(View.VISIBLE);
                         catgoryresult = permission_type.MEMBER;
                         break;
                     case R.id.pmemeber:
                         catgoryresult = permission_type.MEMBER_WITH_PY_ID;
+                        durationResult = "always";
+                        lockpermission.setVisibility(View.GONE);
                         break;
                     default:
                         Log.v("nn", "Huh?");
@@ -304,7 +315,8 @@ public class ChangeDetails extends AppCompatActivity {
                 mTimePicker = new TimePickerDialog(ChangeDetails.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        start.setText(selectedHour + ":" + selectedMinute);
+                       // start.setText(selectedHour + ":" + selectedMinute);
+                        start.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
                         startTime[dayflag]=start.getText().toString();
                         Log.d("one",startTime[dayflag]);
 
@@ -333,7 +345,8 @@ public class ChangeDetails extends AppCompatActivity {
                 mTimePicker = new TimePickerDialog(ChangeDetails.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        end.setText( selectedHour + ":" + selectedMinute);
+                      //  end.setText( selectedHour + ":" + selectedMinute);
+                        end.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
                         endTime[dayflag]=end.getText().toString();
                         Log.d("one", endTime[dayflag]);
                     }
@@ -405,6 +418,7 @@ public class ChangeDetails extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
                         selectedMonth+=1;
+                        //selectedDay+=1;
                         tv1.setText( selectedDay + "." + selectedMonth+"."+selectedYear);
                         date_result=tv1.getText().toString();
                         Log.d("one", date_result);
@@ -432,7 +446,8 @@ public class ChangeDetails extends AppCompatActivity {
                 mTimePicker = new TimePickerDialog(ChangeDetails.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        tv2.setText( selectedHour + ":" + selectedMinute);
+                       // tv2.setText( selectedHour + ":" + selectedMinute);
+                        tv2.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
                         start_result=tv2.getText().toString();
                         Log.d("one", start_result);
                     }
@@ -457,7 +472,8 @@ public class ChangeDetails extends AppCompatActivity {
                 mTimePicker = new TimePickerDialog(ChangeDetails.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        tv3.setText( selectedHour + ":" + selectedMinute);
+                       // tv3.setText( selectedHour + ":" + selectedMinute);
+                        tv3.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
                         end_result=tv3.getText().toString();
                         Log.d("one", end_result);
                     }
@@ -491,30 +507,96 @@ public class ChangeDetails extends AppCompatActivity {
 
     public boolean onOptionsItemSelected(MenuItem item){
         switch(item.getItemId()){
+            case R.id.info_cng:
+                updateUser();
+            return true;
             case R.id.save_cng:
-               // updateUser(); //// TODO: 04/05/2017 tell avital to cng params 
-                if(durationResult.equals("always"))
-                updatePermission1();
-                else
-                updatePermission2(); //// TODO: 04/05/2017 chk why dosent work 
+                    if (durationResult.equals("always"))
+                        updatePermission1();
+                    else
+                        updatePermission2();
 
                 return true;
 
             case R.id.delete_user:
 
-                deleteUser();
+                  deletePermission();
+                //deleteUser();
                 return true;
+
+            case R.id.back:
+                finish();
+                return true;
+
 
         }
         return false;
     }
 
+    public void deletePermission(){
+        String uri3="https://smartlockproject.herokuapp.com/api/removePermission/"+username+"/"+AppConfig.CURRENT_LOCKID+
+                "?token="+AppConfig.TOKEN;
+
+
+        final StringRequest stringRequest3 = new StringRequest(Request.Method.DELETE,uri3,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("RESPONSE", "Register Response: " + response.toString());
+                        //  showJSON(response);
+                        try {
+                            JSONObject jsonObj = new JSONObject(response);
+                            String status = jsonObj.getString("status");
+
+                            if (status.equals("success")) {
+                                Toast.makeText(getApplicationContext(), "User's permission successfully removed!", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(ChangeDetails.this,
+                                        MngUsers.class);
+                                startActivity(intent);
+                            }
+
+                            else {
+                                Toast.makeText(getApplicationContext(), "User's permission was not removed!", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(ChangeDetails.this,
+                                        MngUsers.class);
+                                startActivity(intent);
+                            }
+
+
+
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }//end on response
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(ChangeDetails.this,error.getMessage(),Toast.LENGTH_LONG).show();
+                    }
+                });
+
+        RequestQueue requestQueue3 = Volley.newRequestQueue(this);
+        requestQueue3.add(stringRequest3);
+
+    }
+
+
+
     //for once permission;
     public void updatePermission2(){
         //String lockid="323djdjw32";
+        pDialog.setMessage("updating permission ...");
+        AppConfig.showDialog(pDialog);
+        Log.d("d",durationResult);
+        Log.d("C",String.valueOf(catgoryresult.ordinal()));
 
-        String uri4="https://smartlockproject.herokuapp.com/api/updatePermission/"+username+"/"+SQLiteHandler.CURRENT_LOCKID+"/"+"/"+
-        String.valueOf(catgoryresult.ordinal()) +durationResult+"/"+start_result+"/"+end_result;
+        String uri4="https://smartlockproject.herokuapp.com/api/updatePermission/"+username+"/"+AppConfig.CURRENT_LOCKID+"/"+
+                durationResult+"/"+String.valueOf(catgoryresult.ordinal())+"/"+date_result+"/"+start_result+"/"+end_result
+                +"?token="+AppConfig.TOKEN;
                 
 
         final StringRequest stringRequest4 = new StringRequest(Request.Method.PUT,uri4,
@@ -554,7 +636,11 @@ public class ChangeDetails extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(ChangeDetails.this,error.getMessage(),Toast.LENGTH_LONG).show();
+                       // Toast.makeText(ChangeDetails.this,error.getMessage(),Toast.LENGTH_LONG).show();
+                        String errorMsg ="error - can't update member permission please try again ";
+                        Toast.makeText(getApplicationContext(),
+                                errorMsg, Toast.LENGTH_LONG).show();
+                        AppConfig.hideDialog(pDialog);
                     }
                 });
 
@@ -566,15 +652,18 @@ public class ChangeDetails extends AppCompatActivity {
     public void updatePermission1(){
        // String lockid="323djdjw32";
 
-        String uri2="https://smartlockproject.herokuapp.com/api/updatePermission/"+username+"/"+SQLiteHandler.CURRENT_LOCKID+"/"+ String.valueOf(catgoryresult.ordinal())+"/"
-              /*  +durationResult+"/"+startTime[0]+"/"+startTime[1]+"/"+startTime[2]+"/"+startTime[3]+"/"
-                +startTime[4]+"/"+startTime[5]+"/"+
-                startTime[6]+"/"+endTime[0]+"/"+endTime[1]+"/"+endTime[2]+"/"+endTime[3]+"/"+endTime[4]+"/"+endTime[5]+"/"+
-                endTime[6];*/
-                +durationResult+"/"+startTime[0]+"/"+endTime[0]+"/"+startTime[1]+"/"+endTime[1]+"/"
+        Log.d("start",startTime[0]+","+startTime[1]+","+startTime[2]+","+startTime[3]+","+startTime[4]+","+startTime[5]+","+startTime[6]);
+        Log.d("end",endTime[0]+","+endTime[1]+","+endTime[2]+","+endTime[3]+","+endTime[4]+","+endTime[5]+","+endTime[6]);
+        Log.d("d",durationResult);
+        Log.d("C",String.valueOf(catgoryresult.ordinal()));
+
+
+        String uri2="https://smartlockproject.herokuapp.com/api/updatePermission/"+username+"/"+AppConfig.CURRENT_LOCKID+"/"+durationResult+
+                "/"+String.valueOf(catgoryresult.ordinal())+"/"
+               +startTime[0]+"/"+endTime[0]+"/"+startTime[1]+"/"+endTime[1]+"/"
                 +startTime[2]+"/"+endTime[2]+"/"+
                 startTime[3]+"/"+endTime[3]+"/"+startTime[4]+"/"+endTime[4]+"/"+startTime[5]+"/"+endTime[5]+"/"+startTime[6]+"/"+
-                endTime[6];
+                endTime[6]+"?token="+AppConfig.TOKEN;
 
         final StringRequest stringRequest2 = new StringRequest(Request.Method.PUT,uri2,
                 new Response.Listener<String>() {
@@ -679,7 +768,8 @@ public class ChangeDetails extends AppCompatActivity {
         String userName=ETusername.getText().toString().trim();
         String phone=ETphone.getText().toString().trim();
 
-        String uri="https://smartlockproject.herokuapp.com/api/updateUser/";//TODO add the prams here
+        String uri="https://smartlockproject.herokuapp.com/api/updateUser/"+AppConfig.CURRENT_USERNAME+"/"+userName
+                +"/"+phone;//TODO add the prams here
 
         final StringRequest stringRequest = new StringRequest(Request.Method.PUT,uri,
                 new Response.Listener<String>() {
@@ -693,6 +783,7 @@ public class ChangeDetails extends AppCompatActivity {
 
                             if (status.equals("success")) {
                                 Toast.makeText(getApplicationContext(), "User details successfully changed!", Toast.LENGTH_LONG).show();
+                                flag=true;
                                // Intent intent = new Intent(ChangeDetails.this,
                                  //       MngUsers.class);
                                 //startActivity(intent);

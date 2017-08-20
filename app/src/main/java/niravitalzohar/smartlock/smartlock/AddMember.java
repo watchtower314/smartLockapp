@@ -1,5 +1,6 @@
 package niravitalzohar.smartlock.smartlock;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
@@ -11,8 +12,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -52,11 +55,16 @@ public class AddMember extends AppCompatActivity {
     private EditText _email, _phone;
     private ProgressDialog pDialog;
     private SessionManager session;
-    private SQLiteHandler db;
+  //  private SQLiteHandler db;
     private permission_type catgoryresult;
     private Button plus;
     private String durationResult;
     private User user;
+    private String permissionMsg="you've been received new permissions in SmartLock app.\n" +
+            "You can download the app from the app store.\n" +
+            "\n" +
+            "Best regards,\n" +
+            "Smart Lock Team.";
 
     //for popup
     private PopupWindow mPopupWindow;
@@ -92,7 +100,7 @@ public class AddMember extends AppCompatActivity {
         setContentView(R.layout.activity_add_member);
 
         session = new SessionManager(getApplicationContext());
-        db = new SQLiteHandler(getApplicationContext());
+      //  db = new SQLiteHandler(getApplicationContext());
 
         _email = (EditText) findViewById(R.id.email);
         _phone = (EditText) findViewById(R.id.PhoneET);
@@ -104,6 +112,8 @@ public class AddMember extends AppCompatActivity {
         mContext = getApplicationContext();
         mActivity = AddMember.this;
         mRelativeLayout = (LinearLayout) findViewById(R.id.activity_add_member);
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.SEND_SMS},1);
+
 
         // Progress dialog
         pDialog = new ProgressDialog(this);
@@ -116,15 +126,20 @@ public class AddMember extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup arg0, int id) {
                 switch (id) {
                     case R.id.manger:
+                        lockpermission.setVisibility(View.VISIBLE);
                         catgoryresult = permission_type.MANGER;
                         Log.d("cat",catgoryresult.toString());
                         break;
                     case R.id.member:
+                        lockpermission.setVisibility(View.VISIBLE);
                         catgoryresult = permission_type.MEMBER;
                         Log.d("cat",catgoryresult.toString());
                         break;
                     case R.id.pmemeber:
                         catgoryresult = permission_type.MEMBER_WITH_PY_ID;
+                        durationResult = "always";
+                        lockpermission.setVisibility(View.GONE);
+                        Log.d("cat",catgoryresult.toString());
                         break;
                     default:
                         Log.v("nn", "Huh?");
@@ -164,10 +179,10 @@ public class AddMember extends AppCompatActivity {
 
                 if (!email.isEmpty() && !phone.isEmpty()) {
                     if(durationResult=="always") {
-                        addPermission(email);
+                        addPermission(email,phone);
                     }
                     else if(durationResult=="once"){
-                        addPermission2(email);
+                        addPermission2(email,phone);
 
                     }
                 }
@@ -178,19 +193,20 @@ public class AddMember extends AppCompatActivity {
 
     }
 
-    public void addPermission(final String email){
+    public void addPermission(final String email,final String phone){
         String tag_string_req = "req_register";
+        Log.d("start",startTime[0]+","+startTime[1]+","+startTime[2]+","+startTime[3]+","+startTime[4]+","+startTime[5]+","+startTime[6]);
+        Log.d("end",endTime[0]+","+endTime[1]+","+endTime[2]+","+endTime[3]+","+endTime[4]+","+endTime[5]+","+endTime[6]);
 
-      //  pDialog.setMessage("Registering ...");
-       // showDialog();
+       pDialog.setMessage("adding member ...");
+        showDialog();
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
                 AppConfig.ADD_PERMISSION, new Response.Listener<String>() {
-
             @Override
             public void onResponse(String response) {
                 Log.d("bnnjjj", "Add permission Response: " + response.toString());
-              //  hideDialog();
+                hideDialog();
 
                 try {
                     JSONObject jObj = new JSONObject(response);
@@ -201,6 +217,8 @@ public class AddMember extends AppCompatActivity {
 
 
                         Toast.makeText(getApplicationContext(), "User permission successfully added!", Toast.LENGTH_LONG).show();
+                        SmsManager sms = SmsManager.getDefault();
+                        sms.sendTextMessage(phone, null, permissionMsg, null, null);
 
                         // Launch login activity
                         Intent intent = new Intent(
@@ -211,9 +229,10 @@ public class AddMember extends AppCompatActivity {
                     } else {
 
                         String message=jObj.getString("message");
-                        String errorMsg = message+"please try again";
+                        String errorMsg = message+" please try again";
                         Toast.makeText(getApplicationContext(),
                                 errorMsg, Toast.LENGTH_LONG).show();
+                        hideDialog();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -224,9 +243,13 @@ public class AddMember extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("GJKKK", "Registration Error: " + error.getMessage());
+                Log.e("GJKKK", "addmemeber Error: " + error.getMessage());
+                String errorMsg ="error - can't add memeber please try again ";
                 Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
+                        errorMsg, Toast.LENGTH_LONG).show();
+                hideDialog();
+               // Toast.makeText(getApplicationContext(),
+                //error.getMessage(), Toast.LENGTH_LONG).show();
               //  hideDialog();
             }
         }) {
@@ -235,10 +258,11 @@ public class AddMember extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 // Posting params to register url
                 Map<String, String> params = new HashMap<String, String>();
-                Log.d("lockid-add member",SQLiteHandler.CURRENT_LOCKID);
-                params.put("lockid", SQLiteHandler.CURRENT_LOCKID);
                 params.put("username", email);
+                Log.d("lockid-add member",AppConfig.CURRENT_LOCKID);
+                params.put("lockid", AppConfig.CURRENT_LOCKID);
                params.put("type", String.valueOf(catgoryresult.ordinal()));
+                Log.d("catres",catgoryresult.toString());
                 params.put("frequency", durationResult);
                 params.put("start1", startTime[0]);
                 params.put("start2", startTime[1]);
@@ -254,6 +278,7 @@ public class AddMember extends AppCompatActivity {
                 params.put("end5", endTime[4]);
                 params.put("end6", endTime[5]);
                 params.put("end7", endTime[6]);
+                params.put("token", AppConfig.TOKEN); //// TODO: 29/06/2017 chk how to send token
 
 
 
@@ -275,11 +300,11 @@ public class AddMember extends AppCompatActivity {
             pDialog.dismiss();
     }
 
-    public void addPermission2(final String email){
+    public void addPermission2(final String email,final String phone){
         String tag_string_req = "req_register";
 
-        //  pDialog.setMessage("Registering ...");
-        // showDialog();
+         pDialog.setMessage("adding permission ...");
+         showDialog();
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
                 AppConfig.ADD_PERMISSION, new Response.Listener<String>() {
@@ -287,7 +312,7 @@ public class AddMember extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 Log.d("bnnjjj", "Add permission Response: " + response.toString());
-                //  hideDialog();
+                  hideDialog();
 
                 try {
                     JSONObject jObj = new JSONObject(response);
@@ -295,6 +320,8 @@ public class AddMember extends AppCompatActivity {
                     if (status.equals("success")) {
 
                         Toast.makeText(getApplicationContext(), "User permission successfully added!", Toast.LENGTH_LONG).show();
+                        SmsManager sms = SmsManager.getDefault();
+                        sms.sendTextMessage(phone, null, permissionMsg, null, null);
 
                         // Launch login activity
                         Intent intent = new Intent(
@@ -318,8 +345,12 @@ public class AddMember extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("addMember-addpermision", "add permission Error: " + error.getMessage());
+                String errorMsg ="error - can't add memeber please try again";
                 Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
+                        errorMsg, Toast.LENGTH_LONG).show();
+                hideDialog();
+               // Toast.makeText(getApplicationContext(),
+                 //       error.getMessage(), Toast.LENGTH_LONG).show();
                 //  hideDialog();
             }
         }) {
@@ -328,9 +359,9 @@ public class AddMember extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 // Posting params to register url
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("lockid", SQLiteHandler.CURRENT_LOCKID);
-                Log.d("lockid-add member",SQLiteHandler.CURRENT_LOCKID);
                 params.put("username", email);
+                params.put("lockid", AppConfig.CURRENT_LOCKID);
+                Log.d("lockid-add member",AppConfig.CURRENT_LOCKID);
                 params.put("frequency", durationResult);
                 Log.d("type",String.valueOf(catgoryresult.ordinal()));
                params.put("type", String.valueOf(catgoryresult.ordinal()));
@@ -338,6 +369,8 @@ public class AddMember extends AppCompatActivity {
                 Log.d("start",start_result);
                 params.put("start1", start_result);
                 params.put("end1", end_result);
+                params.put("token", AppConfig.TOKEN); //// TODO: 29/06/2017 chk how to send the token
+
 
 
                 return params;
@@ -357,7 +390,7 @@ public class AddMember extends AppCompatActivity {
         mPopupWindow = new PopupWindow(
                 customView,
                 LinearLayout.LayoutParams.MATCH_PARENT, //width
-                LinearLayout.LayoutParams.WRAP_CONTENT//height
+                LinearLayout.LayoutParams.WRAP_CONTENT //height
         );
 
         if(Build.VERSION.SDK_INT>=21){
@@ -493,7 +526,9 @@ public class AddMember extends AppCompatActivity {
                 mTimePicker = new TimePickerDialog(AddMember.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        start.setText(selectedHour + ":" + selectedMinute);
+                        Log.d("timechk",String.format("%02d:%02d", selectedHour, selectedMinute));
+                        start.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
+                       // start.setText(selectedHour + ":" + selectedMinute);
                         startTime[dayflag]=start.getText().toString();
                         Log.d("one",startTime[dayflag]);
 
@@ -522,7 +557,8 @@ public class AddMember extends AppCompatActivity {
                 mTimePicker = new TimePickerDialog(AddMember.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        end.setText( selectedHour + ":" + selectedMinute);
+                        //end.setText( selectedHour + ":" + selectedMinute);
+                        end.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
                         endTime[dayflag]=end.getText().toString();
                         Log.d("one", endTime[dayflag]);
                     }
@@ -594,6 +630,7 @@ public class AddMember extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
                         selectedMonth+=1;
+                        //selectedDay+=1;
                         tv1.setText( selectedDay + "." + selectedMonth+"."+selectedYear);
                         date_result=tv1.getText().toString();
                         Log.d("one", date_result);
@@ -621,7 +658,8 @@ public class AddMember extends AppCompatActivity {
                 mTimePicker = new TimePickerDialog(AddMember.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        tv2.setText( selectedHour + ":" + selectedMinute);
+                       // tv2.setText( selectedHour + ":" + selectedMinute);
+                        tv2.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
                         start_result=tv2.getText().toString();
                         Log.d("one", start_result);
                     }
@@ -646,7 +684,8 @@ public class AddMember extends AppCompatActivity {
                 mTimePicker = new TimePickerDialog(AddMember.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        tv3.setText( selectedHour + ":" + selectedMinute);
+                       // tv3.setText( selectedHour + ":" + selectedMinute);
+                        tv3.setText(String.format("%02d:%02d", selectedHour, selectedMinute));
                         end_result=tv3.getText().toString();
                         Log.d("one", end_result);
                     }
@@ -677,7 +716,8 @@ public class AddMember extends AppCompatActivity {
         pDialog.setMessage("waiting for checking ...");
         showDialog();
 
-        String uri = "https://smartlockproject.herokuapp.com/api/checkLockAction/" + result;
+        String uri = "https://smartlockproject.herokuapp.com/api/checkLockAction/" + result+
+                "?token="+AppConfig.TOKEN;
         final StringRequest stringRequest = new StringRequest(uri,
                 new Response.Listener<String>() {
                     @Override
@@ -700,9 +740,13 @@ public class AddMember extends AppCompatActivity {
                                         OpenLock.class);
                                 startActivity(intent);
 
-                            } else {
-                                Log.d("here", "hereee");
-                               // Toast.makeText(getApplicationContext(), "checking lock Status ", Toast.LENGTH_LONG).show();
+                            } else if((l_status.equals("timeout")) ){
+                                String errorMsg ="oops something went wrong please try again-timeout error";
+                                Toast.makeText(getApplicationContext(),
+                                        errorMsg, Toast.LENGTH_LONG).show();
+                                hideDialog();
+                            }
+                            else{
                                 getAction2(result);
                             }
 
@@ -719,7 +763,8 @@ public class AddMember extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(AddMember.this, error.getMessage(), Toast.LENGTH_LONG).show();
+                        String errorMsg ="oops something went wrong please try again";
+                        Toast.makeText(AddMember.this, errorMsg, Toast.LENGTH_LONG).show();
                         hideDialog();
                     }
                 });
@@ -797,15 +842,10 @@ public class AddMember extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 // Posting params to unlock url
                 Map<String, String> params = new HashMap<String, String>();
-
-                // params.put("lockId", SQLiteHandler.CURRENT_LOCKID);
                 Log.d("lockid",lockid);
-                params.put("username",SQLiteHandler.CURRENT_USERNAME);
-                params.put("lockid",SQLiteHandler.CURRENT_LOCKID);
-                // params.put("userId",userid);
-                // params.put("lockId",lockid);
-
-                // params.put("username", SQLiteHandler.CURRENT_USERNAME);
+               // params.put("username",SQLiteHandler.CURRENT_USERNAME);
+                params.put("lockid",AppConfig.CURRENT_LOCKID);
+                params.put("token",AppConfig.TOKEN);
 
                 return params;
             }
@@ -842,6 +882,23 @@ public class AddMember extends AppCompatActivity {
                 return true;
 
 
+            case R.id.setting:
+                Intent intent2 = new Intent(AddMember.this,
+                        Settings.class);
+                startActivity(intent2);
+
+                return true;
+
+            case R.id.home:
+                Intent intent3 = new Intent(AddMember.this,
+                        MngUsers.class);
+                startActivity(intent3);
+
+                return true;
+
+
+
+
         }
 
         return false;
@@ -849,7 +906,7 @@ public class AddMember extends AppCompatActivity {
 
 
     public void chkLockStatus(){
-        String uri="https://smartlockproject.herokuapp.com/api/getLock/"+SQLiteHandler.CURRENT_LOCKID;
+        String uri="https://smartlockproject.herokuapp.com/api/getLock/"+AppConfig.CURRENT_LOCKID;
 
         final StringRequest stringRequest = new StringRequest(uri,
                 new Response.Listener<String>() {

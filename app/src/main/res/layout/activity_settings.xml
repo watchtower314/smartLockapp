@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_settings"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    tools:context="niravitalzohar.smartlock.smartlock.Settings">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/settings"
+        android:layout_gravity="center_horizontal"
+        android:fontFamily="cursive"
+        android:textSize="36sp"
+        android:typeface="serif"
+        android:textStyle="normal|italic"
+        android:layout_marginTop="60dp"
+        android:textColor="@color/colorAccent"
+
+
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        android:id="@+id/firstRow"
+        >
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:text="Manage locks"
+            android:id="@+id/mngLocks"
+            android:drawableLeft="@drawable/lock"
+            android:background="@drawable/round_et"
+            android:textColor="@color/gray9"
+
+            />
+
+
+        <Button
+            android:layout_width="130dp"
+            android:layout_height="60dp"
+            android:text="log out"
+            android:id="@+id/stlogOut"
+            android:layout_marginLeft="20dp"
+            android:drawableLeft="@drawable/out"
+            android:background="@drawable/round_et"
+            android:textColor="@color/gray9"
+
+            />
+
+    </LinearLayout>
+
+
+
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:id="@+id/secRow"
+        >
+        <Button
+            android:layout_width="130dp"
+            android:layout_height="60dp"
+            android:text="help"
+            android:id="@+id/stHelp"
+            android:drawableLeft="@drawable/help"
+            android:background="@drawable/round_et"
+            android:textColor="@color/gray9"
+
+            />
+
+
+        <Button
+            android:layout_width="130dp"
+            android:layout_height="60dp"
+            android:text="@string/info"
+            android:id="@+id/stinfo"
+            android:layout_marginLeft="20dp"
+            android:drawableLeft="@drawable/info"
+            android:background="@drawable/round_et"
+            android:textColor="@color/gray9"
+
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:id="@+id/thirdRow"
+        >
+        <Button
+            android:layout_width="130dp"
+            android:layout_height="60dp"
+            android:text="@string/contact"
+            android:id="@+id/stcontact"
+            android:drawableLeft="@drawable/mail"
+            android:background="@drawable/round_et"
+            android:textColor="@color/gray9"
+
+            />
+
+
+        <Button
+            android:layout_width="130dp"
+            android:layout_height="60dp"
+            android:text="@string/logs"
+            android:id="@+id/stLogs"
+            android:layout_marginLeft="20dp"
+            android:drawableLeft="@drawable/logs"
+            android:background="@drawable/round_et"
+            android:textColor="@color/gray9"
+
+            />
+
+    </LinearLayout>
+    <Button
+        android:layout_width="130dp"
+        android:layout_height="60dp"
+        android:text="@string/contactusers"
+        android:id="@+id/stcontactuser"
+        android:drawableLeft="@drawable/mail"
+        android:background="@drawable/round_et"
+        android:textColor="@color/gray9"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+
+        />
+
+</LinearLayout>
