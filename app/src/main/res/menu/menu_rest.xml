@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <item android:id="@+id/home"
+        android:icon="@drawable/home"
+        android:title="@string/info"
+        app:showAsAction="always"
+        />
+
+    <item android:id="@+id/lock"
+        android:icon="@drawable/lock2"
+        android:title="@string/info"
+        app:showAsAction="always"
+        />
+
+    <item android:id="@+id/printf"
+        android:icon="@drawable/fprint2"
+        android:title="@string/fingerprint"
+        app:showAsAction="always"
+        />
+    <item android:id="@+id/setting"
+        android:icon="@drawable/settings"
+        android:title="@string/info"
+        app:showAsAction="always"
+        />
+
+
+
+
+
+
+</menu>

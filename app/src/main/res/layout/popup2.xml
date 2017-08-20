@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/date"
+        android:layout_marginTop="40dp"
+        >
+
+        <Button
+            android:text="set up date"
+            android:layout_width="191dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/b_date" />
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:textColor="@color/gray2"
+            android:id="@+id/date_tv"
+            android:layout_marginLeft="20dp"
+            android:textSize="20dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/start_time"
+        android:layout_marginTop="40dp"
+        >
+
+        <Button
+            android:text="set up start time"
+            android:layout_width="191dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/b_start" />
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:textColor="@color/gray2"
+            android:id="@+id/start_tv"
+            android:layout_marginLeft="20dp"
+            android:textSize="20dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/end_time"
+        android:layout_marginTop="40dp"
+        >
+
+        <Button
+            android:text="set up end time"
+            android:layout_width="191dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/b_end" />
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:textColor="@color/gray2"
+            android:id="@+id/end_tv"
+            android:layout_marginLeft="20dp"
+            android:textSize="20dp"
+            />
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/save"
+        android:layout_marginLeft="280dp"
+        android:layout_marginTop="20dp"
+        android:id="@+id/save2"
+        />
+</LinearLayout>

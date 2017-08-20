@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/mng_popLayout"
+    >
+
+    <TextView
+        android:layout_width="250dp"
+        android:layout_height="70dp"
+        android:text="@string/code_mng"
+        android:fontFamily="cursive"
+        android:textSize="34sp"
+        android:typeface="serif"
+        android:textStyle="normal|italic"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/lockidTV"
+        android:layout_marginTop="100dp"
+        android:textColor="@color/gray2"
+
+        />
+
+    <EditText
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:background="@drawable/circle_et"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/lockidET"
+        />
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/v"
+        android:layout_marginLeft="250dp"
+        android:layout_marginTop="30dp"
+        android:id="@+id/v_button"
+
+        />
+
+</LinearLayout>

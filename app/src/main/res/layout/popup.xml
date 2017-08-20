@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/pop"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/days"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="20dp"
+        >
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/circle_bt2"
+            android:text="S"
+            android:layout_weight="1"
+            android:id="@+id/Sunday"
+            android:onClick="bPressed"
+
+            />
+
+
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/circle_bt2"
+            android:text="M"
+            android:id="@+id/Monday"
+            android:layout_weight="1"
+            android:onClick="bPressed"
+
+
+
+            />
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/circle_bt2"
+            android:text="T"
+            android:id="@+id/Tuesday"
+            android:layout_weight="1"
+            android:onClick="bPressed"
+
+
+            />
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/circle_bt2"
+            android:text="W"
+            android:id="@+id/Wednesday"
+            android:layout_weight="1"
+            android:onClick="bPressed"
+
+
+            />
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/circle_bt2"
+            android:text="T"
+            android:id="@+id/Thursday"
+            android:layout_weight="1"
+            android:onClick="bPressed"
+
+
+            />
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/circle_bt2"
+            android:text="F"
+            android:id="@+id/Friday"
+            android:layout_weight="1"
+
+            />
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/circle_bt2"
+            android:text="S"
+            android:id="@+id/Saturday"
+            android:layout_weight="1"
+            android:onClick="bPressed"
+
+
+            />
+
+    </LinearLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/round_et"
+    >
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:id="@+id/grid1"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/startTV"
+            android:text="start: "
+            android:textSize="22dp"
+            android:textColor="@color/colorAccent"
+
+
+            />
+
+        <EditText
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:id="@+id/start"
+            android:textColor="@color/gray2"
+            android:inputType="text"
+            android:focusable="false"
+            android:layout_toLeftOf="@id/startTV"
+            android:maxLines="1"
+            android:background="@drawable/round_et"
+            android:layout_marginLeft="5dp"
+
+
+            />
+
+
+
+    </GridLayout>
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/grid2"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/endTV"
+            android:text="end: "
+            android:textSize="22dp"
+            android:textColor="@color/colorAccent"
+
+
+            />
+        <EditText
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:id="@+id/end1"
+            android:textColor="@color/gray2"
+            android:inputType="text"
+            android:focusable="false"
+            android:background="@drawable/round_et"
+            android:layout_marginLeft="13dp"
+
+            />
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/v"
+            android:onClick="hide"
+            android:id="@+id/timesave"
+            android:layout_marginLeft="120dp"
+
+            />
+
+    </GridLayout>
+</LinearLayout>
+
+
+
+    <Button
+        android:layout_width="209dp"
+        android:layout_height="45dp"
+        android:text="save"
+        android:id="@+id/out"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+
+
+
+        />
+
+
+</LinearLayout>

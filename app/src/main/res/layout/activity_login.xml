@@ -1,0 +1,131 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:weightSum="1"
+    android:id="@+id/activity_login"
+    tools:context="niravitalzohar.smartlock.smartlock.Login">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/signin"
+        android:fontFamily="cursive"
+        android:textSize="36sp"
+        android:typeface="serif"
+        android:textStyle="normal|italic"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="50dp"
+
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/emailET"
+        android:layout_marginTop="50dp"
+        android:hint="@string/email"
+        android:background="@drawable/circle_et"
+        android:drawableLeft="@drawable/mail"
+        android:elevation="2dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:textColor="@color/gray2"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/passwordET"
+        android:layout_below="@+id/emailET"
+        android:layout_marginTop="20dp"
+        android:hint="@string/password"
+        android:background="@drawable/circle_et"
+        android:drawableLeft="@drawable/lock"
+        android:elevation="2dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:inputType="textPassword"
+        android:textColor="@color/gray2"
+        />
+
+
+
+    <Button
+        android:layout_width="209dp"
+        android:layout_height="36dp"
+        android:id="@+id/signin"
+        android:text="@string/signin"
+        android:layout_below="@+id/passwordET"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/round_bt"
+        android:textColor="@color/gray"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/forgot"
+        android:text="@string/forgot"
+        android:onClick="forgotPass"
+        android:layout_below="@+id/signin"
+        android:layout_alignRight="@+id/passTV"
+        android:layout_alignEnd="@+id/passTV"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        />
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="100dp"
+
+
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/newmember"
+            android:text="@string/msignup"
+            android:textColor="@color/gray2"
+            android:textSize="20sp"
+            android:layout_marginLeft="40dp"
+
+            android:fontFamily="cursive" />
+        <View
+            android:id="@+id/view_separator"
+            android:layout_width="3dp"
+            android:layout_height="20dp"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:background="@color/gray"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:id="@+id/newMngr"
+            android:text="First lock manager"
+            android:textColor="@color/gray2"
+            android:textSize="18sp"
+            android:textIsSelectable="true"
+            android:layout_marginLeft="5dp"
+            android:fontFamily="cursive" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

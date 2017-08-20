@@ -1,0 +1,54 @@
+<resources>
+    <string name="app_name">SmartLock</string>
+    <string name="welcome">Welcome</string>
+    <string name="tap">"Tap to start "</string>
+    <string name="username">User Name</string>
+    <string name="password">Password</string>
+    <string name="signin">Sign in</string>
+    <string name="signup">Sign up</string>
+    <string name="crtmngr">Create new manger account</string>
+    <string name="forgot">forgot password</string>
+    <string name="newpass">New password</string>
+    <string name="cngPass">change password</string>
+    <string name="users">Users</string>
+    <string name="mngr">Active manger</string>
+    <string name="member">Member</string>
+    <string name="manger">Manger </string>
+    <string name="pmember">Member with physical id</string>
+    <string name="category">Category </string>
+    <string name="lockper">Lock permission</string>
+    <string name="phone">Phone</string>
+    <string name="email">Email</string>
+    <string name="anytime">any time</string>
+    <string name="onetime">one time</string>
+    <string name="setup">set up time</string>
+    <string name="msignup">Member sign up</string>
+    <string name="openlock">Lock is open</string>
+    <string name="closelock">Lock is closed</string>
+    <string name="info">info</string>
+    <string name="code">Enter registration code</string>
+    <string name="code_mng">Please enter lock id</string>
+    <string name="fingerprint">Fingerprint</string>
+    <string name="orders">for opening the lock please put your finger on the fingerprint scanner until you see the red light remove the finger and wait for the red light to wave ,put your finger again on the scanner for few seconds\n
+    for adding fingerPrint please press on the adding button and then follow the instruction below.\n
+        for removing fingerPrint press on the removing button
+    </string>
+    <string name="userdetails">User details</string>
+
+    <string name="help">welcome to SmartLock a smart system that allows you to open your lock in one button click on your phone\n
+    in order to use the app please register and login ,now will be able to open/close the lock or add/remove your fingerprint, according to your permissions\n
+        for more help you are welcome to contact us at the email below \n smartlockproj@gmail.com\n
+        Best regards,Smart Lock Team.
+    </string>
+    <string name="helpT">Help</string>
+    <string name="hello">Hello</string>
+    <string name="settings">Settings</string>
+    <string name="contact">contact us</string>
+    <string name="logs">logs</string>
+    <string name="contactusers">Contact Users</string>
+    <string name="submit">Submit</string>
+    <string name="sendmecode">send me code again</string>
+
+
+</resources>
+
