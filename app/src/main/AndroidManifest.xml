@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="niravitalzohar.smartlock.smartlock">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+
+    <application
+        android:name=".AppController"
+        android:allowBackup="true"
+        android:icon="@drawable/logo2"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".MngUsers" />
+        <activity android:name=".Login" />
+        <activity android:name=".AddMember" />
+        <activity android:name=".SignUp" />
+        <activity android:name=".OpenLock" />
+        <activity android:name=".CloseLock" />
+        <activity android:name=".mng_code" />
+        <activity android:name=".FingerPrint" />
+        <activity android:name=".UserDetails" />
+        <activity android:name=".ChangeDetails" />
+        <activity android:name=".UsersLocks" />
+        <activity android:name=".MemberLanding" />
+        <activity android:name=".MemberChangeD" />
+        <activity android:name=".Help" />
+        <activity android:name=".ForgotPassword" />
+        <activity android:name=".Settings" />
+        <activity android:name=".ContactUs" />
+        <activity android:name=".Logs" />
+        <activity android:name=".ContactUsers" />
+        <activity android:name=".RegCode"></activity>
+    </application>
+
+</manifest>
