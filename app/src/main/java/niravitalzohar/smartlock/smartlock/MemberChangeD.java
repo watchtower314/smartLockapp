@@ -106,7 +106,7 @@ public class MemberChangeD extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         switch(item.getItemId()){
             case R.id.info_cng:
-                 updateUser(); //// TODO: 04/05/2017 tell avital to cng params -important
+                 updateUser();
                 return true;
             case R.id.save_cng:
                 String newPassord = newPassword.getText().toString().trim();
@@ -178,11 +178,7 @@ public class MemberChangeD extends AppCompatActivity {
     }
 
     public void deleteUser(){
-      //  String id="58e75074d092a9000411b9a4";
-        //String uri3="https://smartlockproject.herokuapp.com/api/removeUser/"+username;
         String uri3="https://smartlockproject.herokuapp.com/api/removeUser?token="+AppConfig.TOKEN;
-
-
         final StringRequest stringRequest3 = new StringRequest(Request.Method.DELETE,uri3,
                 new Response.Listener<String>() {
                     @Override

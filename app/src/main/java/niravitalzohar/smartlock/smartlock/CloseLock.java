@@ -53,17 +53,12 @@ private ImageView unlock_b;
         unlock_b.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
-               // changeStatus();
                 requestId.setLength(0);
                String result= unlock2();
                 Log.d("result-lock",result);
-                //getAction(result);
-
             }
 
         });
-
-
     }
 
     public String unlock2(){
@@ -129,14 +124,11 @@ private ImageView unlock_b;
                 // Posting params to unlock url
                 Map<String, String> params = new HashMap<String, String>();
 
-                // params.put("lockId", SQLiteHandler.CURRENT_LOCKID);
                 Log.d("lockid",lockid);
                 params.put("username",AppConfig.CURRENT_USERNAME);
                 params.put("lockid",AppConfig.CURRENT_LOCKID);
                 params.put("token",AppConfig.TOKEN);
-                //params.put("lockId",lockid);
 
-                // params.put("username", SQLiteHandler.CURRENT_USERNAME);
 
                 return params;
             }
@@ -217,46 +209,6 @@ private ImageView unlock_b;
     }
 
 
-    public void changeStatus(){
-        /*String uri = String.format("https://smartlockproject.herokuapp.com/api/getUser?param1=%1$s",
-                uid);*/
-        String uri="https://smartlockproject.herokuapp.com/api/updateLockStatus/"+AppConfig.CURRENT_LOCKID
-                +"/"+cngTOstatus;
-
-        final StringRequest stringRequest = new StringRequest(Request.Method.PUT,uri,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d("RESPONSE", "Register Response: " + response.toString());
-                        //  showJSON(response);
-                        try {
-                            JSONObject jsonObj = new JSONObject(response);
-                            JSONObject message = jsonObj.getJSONObject("message");
-                            String status = message.getString("status");
-
-                            if (status.equals("open")) {
-                                Intent intent = new Intent(CloseLock.this,
-                                        OpenLock.class);
-                                startActivity(intent);
-                            }
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }//end on response
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(CloseLock.this,error.getMessage(),Toast.LENGTH_LONG).show();
-                    }
-                });
-
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-    }
     public String chkLockStatus2(){
 
         String tag_string_req = "req_lock";
@@ -321,15 +273,10 @@ private ImageView unlock_b;
             protected Map<String, String> getParams() {
                 // Posting params to unlock url
                 Map<String, String> params = new HashMap<String, String>();
-
-                // params.put("lockId", SQLiteHandler.CURRENT_LOCKID);
                 Log.d("lockid",lockid);
-                //params.put("username",SQLiteHandler.CURRENT_USERNAME);
                 params.put("lockid",AppConfig.CURRENT_LOCKID);
                 params.put("token",AppConfig.TOKEN);
-               // params.put("lockId",lockid);
 
-                // params.put("username", SQLiteHandler.CURRENT_USERNAME);
 
                 return params;
             }

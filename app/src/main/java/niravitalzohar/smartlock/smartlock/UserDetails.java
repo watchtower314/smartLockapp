@@ -59,19 +59,12 @@ public class UserDetails extends AppCompatActivity {
 
         }
         else{
-            //part4=SQLiteHandler.CURRENT_USERNAME;
             name=AppConfig.CURRENT_USERNAME;
             Log.d("name",name);
             phone=getIntent().getStringExtra("phone");
-
-            //part2=getIntent().getStringExtra("Uphone");
-
-            // getUser(part4);
-           Log.d("phone",phone);
+            Log.d("phone",phone);
 
         }
-       // name = part4;
-      //  phone = part2;
 
         startTime = new String[]{"0","0","0","0","0","0","0"};
         endTime = new String[]{"0","0","0","0","0","0","0"};
@@ -135,9 +128,6 @@ public class UserDetails extends AppCompatActivity {
 
 
     public void getuserPermission(String username){
-       // String lockid="323djdjw32";
-
-        //String uri="https://smartlockproject.herokuapp.com/api/getPermission/"+username+"/"+SQLiteHandler.CURRENT_LOCKID;
         String uri="https://smartlockproject.herokuapp.com/api/getPermission/"+username+"/"+AppConfig.CURRENT_LOCKID
                 +"?token="+AppConfig.TOKEN;
 
@@ -151,7 +141,6 @@ public class UserDetails extends AppCompatActivity {
                             JSONObject jsonObj = new JSONObject(response);
                             JSONObject message = jsonObj.getJSONObject("message");
                             frequency=message.getString("frequency");
-                           // String type=jsonObj.getString("type"); //tell avital to chk it cus its missing
                             if (frequency.equals("once")) {
                                 Log.d("bbb","immm hereeeeeeeeee");
                                   date=message.getString("date");
@@ -195,14 +184,10 @@ public class UserDetails extends AppCompatActivity {
                                   "Friday - "+"from "+startTime[5]+" to "+endTime[5]+"\n"+
                                    "Saturday - "+"from "+startTime[6]+" to "+endTime[6]
                                 );
-
                             }
                             else{
                                 Toast.makeText(getApplicationContext(), "cant show permission right now", Toast.LENGTH_LONG).show();
-
                             }
-
-
 
                         } catch (JSONException e) {
                             e.printStackTrace();

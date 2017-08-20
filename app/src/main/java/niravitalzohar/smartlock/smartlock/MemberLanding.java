@@ -60,7 +60,6 @@ public class MemberLanding extends AppCompatActivity {
 
             public void onClick(View view) {
 
-             //   chkLockStatus();
                 requestId.setLength(0);
                 String result= chkLockStatus2();
                 Log.d("result-lock",result);
@@ -73,7 +72,6 @@ public class MemberLanding extends AppCompatActivity {
             public void onClick(View view) {
 
                 Intent intent = new Intent(MemberLanding.this, FingerPrint.class);
-                // intent.putExtra("PermissionType","member");
                 startActivity(intent);
             }
 
@@ -84,10 +82,6 @@ public class MemberLanding extends AppCompatActivity {
             public void onClick(View view) {
                 getUser();
 
-
-               // Intent intent = new Intent(MemberLanding.this, UserDetails.class);
-                // intent.putExtra("PermissionType","member");
-              //  startActivity(intent);
             }
 
         });
@@ -98,8 +92,6 @@ public class MemberLanding extends AppCompatActivity {
 
 
     public void getUser(){
-        //String uri="https://smartlockproject.herokuapp.com/api/getUser/"+AppConfig.CURRENT_USERNAME+
-         //       "?token="+AppConfig.TOKEN;
         final String uri="https://smartlockproject.herokuapp.com/api/getUser?token="+AppConfig.TOKEN;
 
 
@@ -270,15 +262,9 @@ public class MemberLanding extends AppCompatActivity {
                 // Posting params to unlock url
                 Map<String, String> params = new HashMap<String, String>();
 
-                // params.put("lockId", SQLiteHandler.CURRENT_LOCKID);
                 Log.d("lockid",lockid);
-                //params.put("username",SQLiteHandler.CURRENT_USERNAME);
                 params.put("lockid",AppConfig.CURRENT_LOCKID);
                 params.put("token",AppConfig.TOKEN);
-                //params.put("lockId",lockid);
-
-                // params.put("username", SQLiteHandler.CURRENT_USERNAME);
-
                 return params;
             }
 
@@ -342,52 +328,5 @@ public class MemberLanding extends AppCompatActivity {
             pDialog.dismiss();
     }
 
-    public void chkLockStatus(){
-        String uri="https://smartlockproject.herokuapp.com/api/getLock/"+AppConfig.CURRENT_LOCKID;
 
-        final StringRequest stringRequest = new StringRequest(uri,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d("RESPONSE", "Register Response: " + response.toString());
-                        //  showJSON(response);
-                        try {
-                            JSONObject jsonObj = new JSONObject(response);
-                            String status = jsonObj.getString("status");
-                            JSONObject c = jsonObj.getJSONObject("message");
-                            String lockStatus = c.getString("status");
-
-
-                            if (lockStatus.equals("open")) {
-                                Intent intent = new Intent(MemberLanding.this,
-                                        OpenLock.class);
-                                startActivity(intent);
-                            }
-
-                            else {
-                                Intent intent = new Intent(MemberLanding.this,
-                                        CloseLock.class);
-                                startActivity(intent);
-                            }
-
-
-
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }//end on response
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(MemberLanding.this,error.getMessage(),Toast.LENGTH_LONG).show();
-                    }
-                });
-
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-    }
 }

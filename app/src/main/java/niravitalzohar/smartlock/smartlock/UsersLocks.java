@@ -33,8 +33,6 @@ public class UsersLocks extends AppCompatActivity {
     private ListView lockList;
     private ProgressDialog pDialog;
 
-
-
     ArrayList<HashMap<String, String>> contactList;
 
 
@@ -132,10 +130,6 @@ public class UsersLocks extends AppCompatActivity {
     }
 
     public void getUserLocks(){
-       // pDialog.setMessage("waiting for checking ...");
-       // AppConfig.showDialog(pDialog);
-       // final String url="https://smartlockproject.herokuapp.com/api/getPermissionsByUser/"+SQLiteHandler.CURRENT_USERNAME;
-       //  final String url="https://smartlockproject.herokuapp.com/api/getPermissionsByUser?token="+AppConfig.TOKEN;
         final String url= "https://smartlockproject.herokuapp.com/api/getLocksByUser?token="+AppConfig.TOKEN;
 
         final StringRequest stringRequest = new StringRequest(url,
@@ -156,7 +150,6 @@ public class UsersLocks extends AppCompatActivity {
 
                                 for (int i = 0; i < userLocks.length(); i++) {
                                     JSONObject c = userLocks.getJSONObject(i);
-
                                     String id = c.getString("lockid");
                                     String description=c.getString("description");
 
@@ -205,9 +198,6 @@ public class UsersLocks extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
 
-
-
-        //  AppController.getInstance().addToRequestQueue(getRequest, tag_string_req);
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {

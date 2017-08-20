@@ -41,26 +41,16 @@ public class mng_code extends AppCompatActivity {
         pDialog.setCancelable(false);
 
 
-        // permissionType = getIntent().getStringExtra("PermissionType");
-        //Log.d("kk",permissionType);
-
         v_button.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
                 String lockid=lockidET.getText().toString().trim();
-               // SQLiteHandler.CURRENT_LOCKID=lockid;
-
                 Log.d("kkk",lockid);
-
                 Intent intent = new Intent(getBaseContext(), SignUp.class);
                 intent.putExtra("lockid",lockid);
                 startActivity(intent);
-
-              //  getlock(lockid);
-
-
 
             }
         });
@@ -68,60 +58,5 @@ public class mng_code extends AppCompatActivity {
 
     }
 
-    public void getlock(final String lockid){
-        pDialog.setMessage("verifing login details ...");
-        AppConfig.showDialog(pDialog);
 
-        String uri="https://smartlockproject.herokuapp.com/api/getLock/"+lockid;
-
-        final StringRequest stringRequest = new StringRequest(uri,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d("RESPONSE", "Register Response: " + response.toString());
-                        //  showJSON(response);
-                        try {
-                            JSONObject jsonObj = new JSONObject(response);
-                            String status = jsonObj.getString("status");
-
-                            Log.d("hjj",status);
-
-                            if (status!="error") {
-                              /*  Intent intent = new Intent(mng_code.this,
-                                        SignUp.class);
-                                startActivity(intent);*/
-                                Intent intent = new Intent(getBaseContext(), SignUp.class);
-                                intent.putExtra("lockid",lockid);
-                                startActivity(intent);
-                            }
-                            else{
-                                Intent intent = new Intent(mng_code.this,
-                                        MainActivity.class);
-                                startActivity(intent);
-
-                            }
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }//end on response
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                      //  Toast.makeText(mng_code.this,error.getMessage(),Toast.LENGTH_LONG).show();
-                        String errorMsg ="cant find the lock please contact us by email";
-                        Toast.makeText(getApplicationContext(),
-                                errorMsg, Toast.LENGTH_LONG).show();
-                        AppConfig.hideDialog(pDialog);
-                    }
-                });
-
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-
-
-    }
 }

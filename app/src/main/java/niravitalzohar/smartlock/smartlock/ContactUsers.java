@@ -76,12 +76,6 @@ public class ContactUsers extends AppCompatActivity {
 
                         Toast.makeText(getApplicationContext(), "message successfully sent", Toast.LENGTH_LONG).show();
                         finish();
-                       /* Intent intent = new Intent(ContactUs.this,
-                                UsersLocks.class);
-                        startActivity(intent);*/
-
-                        // Launch login activity
-
                     } else {
                         String msg=jObj.getString("message");
                         String passError=msg;

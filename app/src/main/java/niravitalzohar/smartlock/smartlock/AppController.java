@@ -2,6 +2,8 @@ package niravitalzohar.smartlock.smartlock;
 
 /**
  * Created by zohar on 06/04/2017.
+ *  // class for sending http request
+
  */
 
 import android.app.Application;
@@ -12,7 +14,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
 public class AppController extends Application {
-
 
 
     public static final String TAG = AppController.class.getSimpleName();

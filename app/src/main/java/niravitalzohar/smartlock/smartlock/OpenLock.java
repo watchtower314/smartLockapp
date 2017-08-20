@@ -30,13 +30,10 @@ import static niravitalzohar.smartlock.smartlock.permission_type.MANGER;
 public class OpenLock extends AppCompatActivity {
 private ImageView close_b;
     private String cngTOstatus="close";
-   // public String requestId;
     public String l_status=" ";
     StringBuilder requestId = new StringBuilder();
     String lockid="18:fe:34:d4:c6:e8";
-    String userid="58e91fd7fafa6700044b8d61";
     private ProgressDialog pDialog;
-    int count=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,15 +124,10 @@ private ImageView close_b;
             protected Map<String, String> getParams() {
                 // Posting params to unlock url
                 Map<String, String> params = new HashMap<String, String>();
-
-                // params.put("lockId", SQLiteHandler.CURRENT_LOCKID);
                 Log.d("lockid",lockid);
                 params.put("username",AppConfig.CURRENT_USERNAME);
                 params.put("lockid",AppConfig.CURRENT_LOCKID);
                 params.put("token",AppConfig.TOKEN);
-                //params.put("lockId",lockid);
-
-                // params.put("username", SQLiteHandler.CURRENT_USERNAME);
 
                 return params;
             }
@@ -223,49 +215,7 @@ private ImageView close_b;
             pDialog.dismiss();
     }
 
-/*
-    public void changeStatus(){
 
-        String uri="https://smartlockproject.herokuapp.com/api/updateLockStatus/"+SQLiteHandler.CURRENT_LOCKID
-        +"/"+cngTOstatus;
-
-        final StringRequest stringRequest = new StringRequest(Request.Method.PUT,uri,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d("RESPONSE", "Register Response: " + response.toString());
-                        //  showJSON(response);
-                        try {
-                            JSONObject jsonObj = new JSONObject(response);
-                            JSONObject message = jsonObj.getJSONObject("message");
-                            String status = message.getString("status");
-
-                            if (status.equals("close")) {
-                                Intent intent = new Intent(OpenLock.this,
-                                        CloseLock.class);
-                                startActivity(intent);
-                            }
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }//end on response
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(OpenLock.this,error.getMessage(),Toast.LENGTH_LONG).show();
-                    }
-                });
-
-
-
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-    }
-*/
     public String chkLockStatus2(){
 
         String tag_string_req = "req_lock";
@@ -330,17 +280,9 @@ private ImageView close_b;
             protected Map<String, String> getParams() {
                 // Posting params to unlock url
                 Map<String, String> params = new HashMap<String, String>();
-
-                // params.put("lockId", SQLiteHandler.CURRENT_LOCKID);
                 Log.d("lockid",lockid);
                 params.put("username",AppConfig.CURRENT_USERNAME);
                 params.put("lockid",AppConfig.CURRENT_LOCKID);
-               // params.put("username",SQLiteHandler.CURRENT_USERNAME);
-               // params.put("lockid",SQLiteHandler.CURRENT_LOCKID);
-               // params.put("userId",userid);
-                //params.put("lockId",lockid);
-
-                // params.put("username", SQLiteHandler.CURRENT_USERNAME);
 
                 return params;
             }
@@ -350,7 +292,7 @@ private ImageView close_b;
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
         Log.d("REQid",requestId.toString());
-        return requestId.toString();//// TODO: 08/05/2017 chk if really changing
+        return requestId.toString();
 
     }
 

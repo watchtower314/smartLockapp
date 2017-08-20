@@ -55,11 +55,9 @@ public class AddMember extends AppCompatActivity {
     private EditText _email, _phone;
     private ProgressDialog pDialog;
     private SessionManager session;
-  //  private SQLiteHandler db;
     private permission_type catgoryresult;
     private Button plus;
     private String durationResult;
-    private User user;
     private String permissionMsg="you've been received new permissions in SmartLock app.\n" +
             "You can download the app from the app store.\n" +
             "\n" +
@@ -100,7 +98,6 @@ public class AddMember extends AppCompatActivity {
         setContentView(R.layout.activity_add_member);
 
         session = new SessionManager(getApplicationContext());
-      //  db = new SQLiteHandler(getApplicationContext());
 
         _email = (EditText) findViewById(R.id.email);
         _phone = (EditText) findViewById(R.id.PhoneET);
@@ -843,7 +840,6 @@ public class AddMember extends AppCompatActivity {
                 // Posting params to unlock url
                 Map<String, String> params = new HashMap<String, String>();
                 Log.d("lockid",lockid);
-               // params.put("username",SQLiteHandler.CURRENT_USERNAME);
                 params.put("lockid",AppConfig.CURRENT_LOCKID);
                 params.put("token",AppConfig.TOKEN);
 
@@ -955,77 +951,3 @@ public class AddMember extends AppCompatActivity {
     }
 }
 
-/*
-       plus.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Log.d("jjj","add");
-                String email = _email.getText().toString().trim();
-                String phone = _phone.getText().toString().trim();
-                String userid="1";
-                String pass="1222";
-
-                if (!email.isEmpty() && !phone.isEmpty()) {
-                    user=new User(userid,phone,pass,email);
-                    registerUser(user);
-                }
-
-
-
-               Permission permission= new Permission(catgoryresult,"0",user.getUserid(),0,durationResult);
-                createPermission(permission);
-
-
-            }
-        }); // plus listner
-
-
-
-    }
-
-    private void registerUser(User user) {
-        // pDialog.setMessage("Registering ...");
-        // showDialog();
-        db.addUser(user);
-        SQLiteDatabase db1 = db.getReadableDatabase(); //for printing
-
-        Toast.makeText(getApplicationContext(), "User successfully registered. Try login now!", Toast.LENGTH_LONG).show();
-        Log.d("table", getTableAsString(db1, db.gettable()));
-        // Launch login activity
-        Intent intent = new Intent( // move this code
-                AddMember.this,
-                Login.class);
-        startActivity(intent);
-        finish();
-
-    }
-
-    private void createPermission(Permission permission){
-        db.addpermission(permission);
-        SQLiteDatabase db1 = db.getReadableDatabase(); //for printing
-        Toast.makeText(getApplicationContext(), "permission added", Toast.LENGTH_LONG).show();
-        Log.d("table", getTableAsString(db1, db.getTablePermission()));
-
-    }
-
-
-
-    public String getTableAsString(SQLiteDatabase db, String tableName) {
-        // Log.d(TAG, "getTableAsString called");
-        String tableString = String.format("Table %s:\n", tableName);
-        Cursor allRows  = db.rawQuery("SELECT * FROM " + tableName, null);
-        if (allRows.moveToFirst() ){
-            String[] columnNames = allRows.getColumnNames();
-            do {
-                for (String name: columnNames) {
-                    tableString += String.format("%s: %s\n", name,
-                            allRows.getString(allRows.getColumnIndex(name)));
-                }
-                tableString += "\n";
-
-            } while (allRows.moveToNext());
-        }
-
-        return tableString;
-    }
-
-    }*/

@@ -521,7 +521,6 @@ public class ChangeDetails extends AppCompatActivity {
             case R.id.delete_user:
 
                   deletePermission();
-                //deleteUser();
                 return true;
 
             case R.id.back:

@@ -44,19 +44,8 @@ public class MngUsers extends AppCompatActivity {
     private String l_status=" ";
     StringBuilder requestId = new StringBuilder();
     private TextView Activemng;
-   // StringBuilder l_status = new StringBuilder();
- //   String lockid="18:fe:34:d4:c6:e8";
- //   String userid="58e91fd7fafa6700044b8d61";
     private ProgressDialog pDialog;
-//    int count=0;
-
-
-
-
     ArrayList<HashMap<String, String>> contactList;
-//    RequestQueue queue = Volley.newRequestQueue(this);
-
-
 
 
     @Override
@@ -108,7 +97,6 @@ public class MngUsers extends AppCompatActivity {
         // URL to get contacts JSON
         pDialog.setMessage("retrieving data ...");
         showDialog();
-        //final String url="https://smartlockproject.herokuapp.com/api/getUsersByLock/"+SQLiteHandler.CURRENT_LOCKID;
         final String url="https://smartlockproject.herokuapp.com/api/getUsersByLock/"+AppConfig.CURRENT_LOCKID
                 +"?token="+AppConfig.TOKEN;
 
@@ -129,18 +117,12 @@ public class MngUsers extends AppCompatActivity {
                                 // Getting JSON Array node
                                 JSONArray contacts = jsonObj.getJSONArray("message");
 
-
-                                //JSONObject jsonObj = new JSONObject(response);
-                          /*  JSONArray contacts=new JSONArray(response);*/
-
-                                // JSONArray contacts = jsonObj.getJSONArray(" ");
                                 for (int i = 0; i < contacts.length(); i++) {
                                     JSONObject c = contacts.getJSONObject(i);
                                     String id = c.getString("_id");
                                     String username = c.getString("username");
                                     String phone = c.getString("phone");
-                                    // String password = c.getString("password");
-                                    // tmp hash map for single contact
+
                                     HashMap<String, String> contact = new HashMap<>();
 
                                     // adding each child node to HashMap key => value
@@ -187,13 +169,7 @@ public class MngUsers extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
 
-
-
-        //  AppController.getInstance().addToRequestQueue(getRequest, tag_string_req);
     }
-
-
-
 
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -259,7 +235,6 @@ public class MngUsers extends AppCompatActivity {
                             Log.d("status",l_status);
                             String action = jsonObj.getString("action");
                             if (l_status.equals("lock")) {
-                                //   if(action.equals("lock")){
                                 Intent intent = new Intent(MngUsers.this,
                                         CloseLock.class);
                                 startActivity(intent);
@@ -329,24 +304,10 @@ public class MngUsers extends AppCompatActivity {
                     JSONObject jObj = new JSONObject(response);
                     String status=jObj.getString("status");
 
-                    //requestId=jObj.getString("requestId");
-
-
                     if(status.equals("request created")){
                         requestId.append(jObj.getString("requestId"));
                         Log.d("REQid",requestId.toString());
-                        //TODO go to get action
-
-
-                     //   Toast.makeText(getApplicationContext(), "THE LOCK Status ", Toast.LENGTH_LONG).show();
                         getAction2(requestId.toString()).equals("unhandle");
-                        // while (getAction2(requestId.toString()).equals("unhandle")){
-                        //   getAction2(requestId.toString());
-                        // }
-
-                        //  return;
-                        // Launch login activity
-
                     } else {
                         String message=jObj.getString("message");
 
@@ -376,16 +337,8 @@ public class MngUsers extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 // Posting params to unlock url
                 Map<String, String> params = new HashMap<String, String>();
-
-                // params.put("lockId", SQLiteHandler.CURRENT_LOCKID);
-               // Log.d("lockid",lockid);
-               // params.put("username",SQLiteHandler.CURRENT_USERNAME);
                 params.put("lockid",AppConfig.CURRENT_LOCKID);
                 params.put("token",AppConfig.TOKEN);
-              //  params.put("lockId",lockid);
-
-                // params.put("username", SQLiteHandler.CURRENT_USERNAME);
-
                 return params;
             }
 
@@ -398,110 +351,6 @@ public class MngUsers extends AppCompatActivity {
 
     }
 
-
-
-
-    public void chkLockStatus(){
-        String uri="https://smartlockproject.herokuapp.com/api/getLock/"+AppConfig.CURRENT_LOCKID;
-
-        final StringRequest stringRequest = new StringRequest(uri,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d("RESPONSE", "Register Response: " + response.toString());
-                        //  showJSON(response);
-                        try {
-                            JSONObject jsonObj = new JSONObject(response);
-                            String status = jsonObj.getString("status");
-                            JSONObject c = jsonObj.getJSONObject("message");
-                            String lockStatus = c.getString("status");
-
-
-                            if (lockStatus.equals("open")) {
-                                Intent intent = new Intent(MngUsers.this,
-                                        OpenLock.class);
-                                startActivity(intent);
-                            }
-
-                            else {
-                                Intent intent = new Intent(MngUsers.this,
-                                        CloseLock.class);
-                                startActivity(intent);
-                            }
-
-
-
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }//end on response
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(MngUsers.this,error.getMessage(),Toast.LENGTH_LONG).show();
-                    }
-                });
-
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-    }
-
-    public void getStatus(MenuItem item){
-        //https://smartlockproject.herokuapp.com/api/getLock/:lockid
-        String lock_id="323djdjw32";
-        /*String uri = String.format("https://smartlockproject.herokuapp.com/api/getUser?param1=%1$s",
-                uid);*/
-        String uri="https://smartlockproject.herokuapp.com/api/getLock/"+lock_id;
-
-        final StringRequest stringRequest = new StringRequest(uri,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d("RESPONSE", "Register Response: " + response.toString());
-                        //  showJSON(response);
-                        try {
-                            JSONObject jsonObj = new JSONObject(response);
-                            String status = jsonObj.getString("status");
-
-                            if (status.equals("open")) {
-                                Intent intent = new Intent(MngUsers.this,
-                                        OpenLock.class);
-                                startActivity(intent);
-                            }
-
-                            else {
-                                Intent intent = new Intent(MngUsers.this,
-                                        CloseLock.class);
-                                startActivity(intent);
-                            }
-
-
-
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }//end on response
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(MngUsers.this,error.getMessage(),Toast.LENGTH_LONG).show();
-                    }
-                });
-
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-
-
-
-    }
     private void showDialog() {
         if (!pDialog.isShowing())
             pDialog.show();
@@ -513,30 +362,3 @@ public class MngUsers extends AppCompatActivity {
     }
 
 }
-  /*  private List<User> userList = new ArrayList<>();
-    private RecyclerView recyclerView;
-    private UserAdapter mAdapter;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mng_users);
-      recyclerView = (RecyclerView) findViewById(R.id.users_recycler_view);
-
-        mAdapter = new UserAdapter(userList);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mAdapter);
-
-        prepareUserData();
-    }
-    private void prepareUserData() {
-        User user = new User(123456, "Josh Toker", "0546377534", "3333333", "josh@gmail.com");
-        userList.add(user);
-
-        user = new User(123456, "Anna piterovski", "0546377534", "4444444", "Anna@gmail.com");
-        userList.add(user);
-    }
-    }
-}*/

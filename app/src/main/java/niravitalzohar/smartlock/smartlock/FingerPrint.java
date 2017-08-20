@@ -153,15 +153,9 @@ public class FingerPrint extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 // Posting params to unlock url
                 Map<String, String> params = new HashMap<String, String>();
-
-                // params.put("lockId", SQLiteHandler.CURRENT_LOCKID);
                 Log.d("lockid",lockid);
-               // params.put("username",SQLiteHandler.CURRENT_USERNAME);
                 params.put("lockid",AppConfig.CURRENT_LOCKID);
                 params.put("token",AppConfig.TOKEN);
-               // params.put("lockId",lockid);
-
-                // params.put("username", SQLiteHandler.CURRENT_USERNAME);
 
                 return params;
             }
@@ -241,10 +235,7 @@ public class FingerPrint extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 // Posting params to unlock url
                 Map<String, String> params = new HashMap<String, String>();
-
-                // params.put("lockId", SQLiteHandler.CURRENT_LOCKID);
                 Log.d("lockid",lockid);
-               // params.put("username",SQLiteHandler.CURRENT_USERNAME);
                 params.put("lockid",AppConfig.CURRENT_LOCKID);
                 params.put("token",AppConfig.TOKEN);
 
@@ -294,12 +285,6 @@ public class FingerPrint extends AppCompatActivity {
 
                             }
                             else if (l_status.equals("done")) {
-                               /* if(flag==1) {
-                                    Toast.makeText(getApplicationContext(), "User's  fingerPrint successfully added!", Toast.LENGTH_LONG).show();
-                                }
-                                else if(flag==2){
-                                    Toast.makeText(getApplicationContext(), "User's  fingerPrint successfully removed!", Toast.LENGTH_LONG).show();
-                                }*/
                                 Toast.makeText(getApplicationContext(), "request success!", Toast.LENGTH_LONG).show();
                                 hideDialog();
                             }
@@ -360,16 +345,11 @@ public class FingerPrint extends AppCompatActivity {
 
                             if (status.equals("success")) {
                                 Toast.makeText(getApplicationContext(), "User's  fingerPrint successfully removed!", Toast.LENGTH_LONG).show();
-                                /*Intent intent = new Intent(FingerPrint.this,
-                                        MngUsers.class);
-                                startActivity(intent);*/
                             }
 
                             else {
                                 Toast.makeText(getApplicationContext(), "User's fingerPrint was not removed!", Toast.LENGTH_LONG).show();
-                              /*  Intent intent = new Intent(FingerPrint.this,
-                                        MngUsers.class);
-                                startActivity(intent);*/
+
                             }
 
 
@@ -415,20 +395,11 @@ public class FingerPrint extends AppCompatActivity {
 
                             if (status.equals("success")) {
                                 Toast.makeText(getApplicationContext(), "User's  fingerPrint successfully updated!", Toast.LENGTH_LONG).show();
-                                /*Intent intent = new Intent(FingerPrint.this,
-                                        MngUsers.class);
-                                startActivity(intent);*/
                             }
 
                             else {
                                 Toast.makeText(getApplicationContext(), "User's fingerPrint was not updated!", Toast.LENGTH_LONG).show();
-                              /*  Intent intent = new Intent(FingerPrint.this,
-                                        MngUsers.class);
-                                startActivity(intent);*/
                             }
-
-
-
 
 
                         } catch (JSONException e) {
@@ -514,9 +485,7 @@ public class FingerPrint extends AppCompatActivity {
                 // Posting params to unlock url
                 Map<String, String> params = new HashMap<String, String>();
 
-                // params.put("lockId", SQLiteHandler.CURRENT_LOCKID);
                 Log.d("lockid",lockid);
-              //  params.put("username",SQLiteHandler.CURRENT_USERNAME);
                 params.put("lockid",AppConfig.CURRENT_LOCKID);
                 params.put("token",AppConfig.TOKEN);
 
