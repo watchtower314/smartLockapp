@@ -6,7 +6,6 @@ import java.security.PrivateKey;
  * Created by zohar on 27/03/2017.
  */
 
-enum permission_type { MANGER, MEMBER_WITH_PY_ID, MEMBER,GUEST }
 
 
 public class Permission {

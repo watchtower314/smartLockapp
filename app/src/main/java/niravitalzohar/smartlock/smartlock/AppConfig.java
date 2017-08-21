@@ -24,6 +24,7 @@ import java.util.Map;
 /**
  * Created by zohar on 06/04/2017.
  */
+enum permission_type { MANGER, MEMBER_WITH_PY_ID, MEMBER,GUEST }
 
 
 public class AppConfig extends AppCompatActivity {
