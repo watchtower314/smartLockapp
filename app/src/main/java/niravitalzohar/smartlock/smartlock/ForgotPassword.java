@@ -47,7 +47,7 @@ public class ForgotPassword extends AppCompatActivity {
         cngPass.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
-                String emailF = userF.getText().toString().trim();
+                String emailF = userF.getText().toString().trim().toLowerCase();
                 String passwordf = newPassword.getText().toString().trim();
                 changePass(emailF,passwordf);
                // Intent intent = new Intent(getBaseContext(), ForgotPassword.class);
@@ -60,7 +60,7 @@ public class ForgotPassword extends AppCompatActivity {
 
     public void changePass(String Email,String nPassword){
 
-        String uri="https://smartlockproject.herokuapp.com/api/changePassword/"+Email+"/"+nPassword;
+        String uri=AppConfig.Forgot_PASS+Email;
         final StringRequest stringRequest4 = new StringRequest(Request.Method.PUT,uri,
                 new Response.Listener<String>() {
                     @Override

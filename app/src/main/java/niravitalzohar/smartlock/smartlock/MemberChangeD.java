@@ -44,7 +44,7 @@ public class MemberChangeD extends AppCompatActivity {
 
     public void changePass(String nPassword,String Opass){
 
-        String uri="https://smartlockproject.herokuapp.com/api/changePassword/"+nPassword+"/"+Opass
+        String uri=AppConfig.CHNG_PASS+nPassword+"/"+Opass
                 +"?token="+AppConfig.TOKEN;
         final StringRequest stringRequest4 = new StringRequest(Request.Method.PUT,uri,
                 new Response.Listener<String>() {
@@ -129,7 +129,7 @@ public class MemberChangeD extends AppCompatActivity {
     }
 
     public void updateUser(){
-        String userName=ETusername.getText().toString().trim();
+        String userName=ETusername.getText().toString().trim().toLowerCase();
         String phone=ETphone.getText().toString().trim();
 
         String uri="https://smartlockproject.herokuapp.com/api/updateUser/"+AppConfig.CURRENT_USERNAME+"/"+userName

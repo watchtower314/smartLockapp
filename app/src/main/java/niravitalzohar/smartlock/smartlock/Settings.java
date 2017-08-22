@@ -154,23 +154,14 @@ public class Settings extends AppCompatActivity {
                             if(status.equals("success")) {
                                  JSONObject message = jsonObj.getJSONObject("message");
                                 String phone=message.getString("phone");
-                                if(AppConfig.CURRENT_PERMISSION_TYPE==permission_type.MANGER) {
 
-                                    Intent intent = new Intent(
-                                            Settings.this,
-                                            UserDetails.class);
-                                    intent.putExtra("name", AppConfig.CURRENT_USERNAME);
-                                    intent.putExtra("phone", phone);
-                                    startActivity(intent);
-                                }
-                                else{
-                                    Intent intent = new Intent(
-                                            Settings.this,
-                                            UserDetails.class);
-                                    intent.putExtra("phone", phone);
-                                    startActivity(intent);
-                                }
-
+                                Intent intent = new Intent(
+                                        Settings.this,
+                                        MemberChangeD.class);
+                                intent.putExtra("name", AppConfig.CURRENT_USERNAME);
+                                intent.putExtra("phone", phone);
+                                startActivity(intent);
+                                
 
                             }
                             else{

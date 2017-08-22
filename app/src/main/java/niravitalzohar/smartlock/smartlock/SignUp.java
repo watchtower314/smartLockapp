@@ -84,7 +84,7 @@ public void onCreate(Bundle savedInstanceState) {
 
         public void onClick(View view) {
             String password = _password.getText().toString().trim();
-            String email = _email.getText().toString().trim();
+            String email = _email.getText().toString().trim().toLowerCase();;
             String phone = _phone.getText().toString().trim();
 
             if (!phone.isEmpty() && !email.isEmpty() && !password.isEmpty()) {

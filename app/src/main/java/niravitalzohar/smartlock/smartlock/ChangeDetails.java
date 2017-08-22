@@ -708,63 +708,12 @@ public class ChangeDetails extends AppCompatActivity {
         RequestQueue requestQueue2 = Volley.newRequestQueue(this);
         requestQueue2.add(stringRequest2);
 
-
-
     }
 
-    public void deleteUser(){
-        String id="58e75074d092a9000411b9a4";
-        String uri3="https://smartlockproject.herokuapp.com/api/removeUser/"+username;
 
-        final StringRequest stringRequest3 = new StringRequest(Request.Method.DELETE,uri3,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d("RESPONSE", "Register Response: " + response.toString());
-                        //  showJSON(response);
-                        try {
-                            JSONObject jsonObj = new JSONObject(response);
-                            String status = jsonObj.getString("status");
-
-                            if (status.equals("success")) {
-                                Toast.makeText(getApplicationContext(), "User successfully removed!", Toast.LENGTH_LONG).show();
-                                Intent intent = new Intent(ChangeDetails.this,
-                                        MngUsers.class);
-                                startActivity(intent);
-                            }
-
-                            else {
-                                Toast.makeText(getApplicationContext(), "User was not removed!", Toast.LENGTH_LONG).show();
-                                Intent intent = new Intent(ChangeDetails.this,
-                                        MngUsers.class);
-                                startActivity(intent);
-                            }
-
-
-
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }//end on response
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(ChangeDetails.this,error.getMessage(),Toast.LENGTH_LONG).show();
-                    }
-                });
-
-        RequestQueue requestQueue3 = Volley.newRequestQueue(this);
-        requestQueue3.add(stringRequest3);
-
-
-    }
 
     public void updateUser(){
-        String userName=ETusername.getText().toString().trim();
+        String userName=ETusername.getText().toString().trim().toLowerCase();
         String phone=ETphone.getText().toString().trim();
 
         String uri="https://smartlockproject.herokuapp.com/api/updateUser/"+AppConfig.CURRENT_USERNAME+"/"+userName

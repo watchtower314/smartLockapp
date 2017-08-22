@@ -171,7 +171,7 @@ public class AddMember extends AppCompatActivity {
                 Log.d("jjj","add");
                 System.out.println(Arrays.toString(startTime));
                 System.out.println(Arrays.toString(endTime));
-               String email = _email.getText().toString().trim();
+               String email = _email.getText().toString().trim().toLowerCase();;
                 String phone = _phone.getText().toString().trim();
 
                 if (!email.isEmpty() && !phone.isEmpty()) {

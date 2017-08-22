@@ -104,7 +104,7 @@ public class Login extends AppCompatActivity {
         signin.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
-                String Iemail = user.getText().toString().trim();
+                String Iemail = user.getText().toString().trim().toLowerCase();;
                 String Ipassword = password.getText().toString().trim();
 
                 // Check for empty data in the form
@@ -138,6 +138,15 @@ public class Login extends AppCompatActivity {
       //          openPopupMng();
                 AppConfig.CURRENT_PERMISSION_TYPE=MANGER;
                 Intent intent = new Intent(getBaseContext(), mng_code.class);
+                startActivity(intent);
+            }
+
+        });
+
+        forgot.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), ForgotPassword.class);
                 startActivity(intent);
             }
 
