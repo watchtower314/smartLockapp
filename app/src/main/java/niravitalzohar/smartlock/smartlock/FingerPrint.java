@@ -558,4 +558,8 @@ public class FingerPrint extends AppCompatActivity {
             pDialog.dismiss();
     }
 
+    @Override
+    public void onBackPressed() {
+    }
+
 }

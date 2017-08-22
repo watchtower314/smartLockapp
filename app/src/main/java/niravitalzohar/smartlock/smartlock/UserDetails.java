@@ -222,5 +222,8 @@ public class UserDetails extends AppCompatActivity {
 
         return false;
     }
+    @Override
+    public void onBackPressed() {
+    }
 
 }

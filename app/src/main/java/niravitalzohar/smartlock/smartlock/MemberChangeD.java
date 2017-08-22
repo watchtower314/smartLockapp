@@ -226,4 +226,8 @@ public class MemberChangeD extends AppCompatActivity {
 
 
     }
+
+    @Override
+    public void onBackPressed() {
+    }
 }

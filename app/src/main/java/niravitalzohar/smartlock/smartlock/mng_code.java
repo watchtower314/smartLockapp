@@ -58,5 +58,7 @@ public class mng_code extends AppCompatActivity {
 
     }
 
-
+    @Override
+    public void onBackPressed() {
+    }
 }

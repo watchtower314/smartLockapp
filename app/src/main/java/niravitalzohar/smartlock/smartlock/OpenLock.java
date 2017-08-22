@@ -390,4 +390,8 @@ private ImageView close_b;
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
     }
+
+    @Override
+    public void onBackPressed() {
+    }
 }

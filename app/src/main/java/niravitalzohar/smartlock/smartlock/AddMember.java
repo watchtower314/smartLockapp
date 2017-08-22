@@ -949,5 +949,9 @@ public class AddMember extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
     }
+
+    @Override
+    public void onBackPressed() {
+    }
 }
 

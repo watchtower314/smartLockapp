@@ -218,4 +218,9 @@ public class Settings extends AppCompatActivity {
 
         return false;
     }
+
+    @Override
+    public void onBackPressed() {
+    }
+
 }

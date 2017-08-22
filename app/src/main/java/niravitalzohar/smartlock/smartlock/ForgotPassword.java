@@ -111,4 +111,8 @@ public class ForgotPassword extends AppCompatActivity {
 
 
     }
+
+    @Override
+    public void onBackPressed() {
+    }
 }//end class

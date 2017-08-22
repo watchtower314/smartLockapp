@@ -361,4 +361,8 @@ public class MngUsers extends AppCompatActivity {
             pDialog.dismiss();
     }
 
+    @Override
+    public void onBackPressed() {
+    }
+
 }

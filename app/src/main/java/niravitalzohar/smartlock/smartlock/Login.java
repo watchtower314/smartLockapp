@@ -256,5 +256,7 @@ public class Login extends AppCompatActivity {
         return false;
     }
 
-
-    }//end class
+    @Override
+    public void onBackPressed() {
+    }
+}//end class

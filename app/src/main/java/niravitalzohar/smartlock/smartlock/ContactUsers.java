@@ -135,4 +135,8 @@ public class ContactUsers extends AppCompatActivity {
 
         return false;
     }
+
+    @Override
+    public void onBackPressed() {
+    }
 }

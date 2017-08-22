@@ -327,6 +327,8 @@ public class MemberLanding extends AppCompatActivity {
         if (pDialog.isShowing())
             pDialog.dismiss();
     }
-
+    @Override
+    public void onBackPressed() {
+    }
 
 }

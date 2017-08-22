@@ -399,4 +399,8 @@ private ImageView unlock_b;
             pDialog.dismiss();
     }
 
+    @Override
+    public void onBackPressed() {
+    }
+
 }
