@@ -57,25 +57,11 @@ public class Login extends AppCompatActivity {
     private TextView new_member,new_mng,forgot;
     private String lockid;
 
-
-    //for popup
-   /* private PopupWindow mPopupWindow;
-    private LinearLayout mLinearLayout;
-    private Context mContext;
-    private Activity mActivity;
-    private TextView lockidTv,phone_mng;
-    private EditText lockidET, phone_mngET;
-    private Button v_button;*/
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-     //   mContext = getApplicationContext();
-      //  mActivity = Login.this;
-       // mLinearLayout=(LinearLayout)findViewById(R.id.activity_login);
 
         user = (EditText) findViewById(R.id.emailET);
         password = (EditText) findViewById(R.id.passwordET);
@@ -134,8 +120,7 @@ public class Login extends AppCompatActivity {
         new_mng.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
-                Log.d("jhh","hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
-      //          openPopupMng();
+               // Log.d("jhh","hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
                 AppConfig.CURRENT_PERMISSION_TYPE=MANGER;
                 Intent intent = new Intent(getBaseContext(), mng_code.class);
                 startActivity(intent);

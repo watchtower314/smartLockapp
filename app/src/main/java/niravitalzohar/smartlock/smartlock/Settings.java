@@ -161,7 +161,7 @@ public class Settings extends AppCompatActivity {
                                 intent.putExtra("name", AppConfig.CURRENT_USERNAME);
                                 intent.putExtra("phone", phone);
                                 startActivity(intent);
-                                
+
 
                             }
                             else{

@@ -61,6 +61,8 @@ public class AppConfig extends AppCompatActivity {
 
     public static String CHNG_PASS="https://smartlockproject.herokuapp.com/api/changePassword/";
 
+    public static String ADD_LOCK="https://smartlockproject.herokuapp.comapi/AddLock";
+
     public static String Forgot_PASS="https://smartlockproject.herokuapp.com/api/forgotPassword/";
 
     public static String OPEN_MNG_ACCOUNT="https://smartlockproject.herokuapp.com/api/openManagerAccount";

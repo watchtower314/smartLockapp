@@ -29,6 +29,8 @@
     <string name="code">Enter registration code</string>
     <string name="code_mng">Please enter lock id</string>
     <string name="fingerprint">Fingerprint</string>
+    <string name="addlock">Add Lock</string>
+    <string name="removelock">Remove Lock</string>
     <string name="oldPass">Old password</string>
     <string name="orders">for opening the lock please put your finger on the fingerprint scanner until you see the red light remove the finger and wait for the red light to wave ,put your finger again on the scanner for few seconds\n
     for adding fingerPrint please press on the adding button and then follow the instruction below.\n

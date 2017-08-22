@@ -10,12 +10,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -27,11 +29,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 public class UsersLocks extends AppCompatActivity {
     private ListView lockList;
     private ProgressDialog pDialog;
+    private Button plusLock;
 
     ArrayList<HashMap<String, String>> contactList;
 
@@ -40,6 +45,8 @@ public class UsersLocks extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_users_locks);
+        plusLock=(Button)findViewById(R.id.plusLock);
+
 
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
@@ -60,7 +67,24 @@ public class UsersLocks extends AppCompatActivity {
             }
         });
 
+        plusLock.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                // Launch login activity
+                Intent intent = new Intent(
+                        UsersLocks.this,
+                        AddLock.class);
+                startActivity(intent);
+
+            }
+
+        });
+
+
     }
+
+
+
+
     public void chkUserType(){
          String uri="https://smartlockproject.herokuapp.com/api/getPermission/"+AppConfig.CURRENT_USERNAME+"/" +AppConfig.CURRENT_LOCKID+"?token="
         +AppConfig.TOKEN;

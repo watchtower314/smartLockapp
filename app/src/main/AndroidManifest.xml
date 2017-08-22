@@ -38,7 +38,8 @@
         <activity android:name=".ContactUs" />
         <activity android:name=".Logs" />
         <activity android:name=".ContactUsers" />
-        <activity android:name=".RegCode"></activity>
+        <activity android:name=".RegCode" />
+        <activity android:name=".AddLock"></activity>
     </application>
 
 </manifest>
