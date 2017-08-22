@@ -19,7 +19,9 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
+/* manager(the owner of the lock) that want to open new account for first time will get lockid from SmartLock team
+* he will enter this lockid to this activity - and if there is no mangaer already for this lock a new accout will be created with manager permission
+* */
 public class mng_code extends AppCompatActivity {
     private TextView lockidTv;
     private EditText lockidET;

@@ -36,7 +36,9 @@ import java.util.List;
 import java.util.Map;
 
 import static java.lang.Thread.sleep;
-
+ /*main page for user with mangar permission , a list of lock's users will be shown.manager can view user's details be clicking
+  * on user's name from the list or he can add new permission for user by perssing the plus button
+   * */
 public class MngUsers extends AppCompatActivity {
 
     private ListView lv;
@@ -92,7 +94,7 @@ public class MngUsers extends AppCompatActivity {
 
     }
 
-
+//retrieving lock's users -users with permission for this lock
     public void getData(){
         // URL to get contacts JSON
         pDialog.setMessage("retrieving data ...");
@@ -313,7 +315,7 @@ public class MngUsers extends AppCompatActivity {
 
                         // Error occurred in registration. Get the error
                         // message
-                        String errorMsg = message+" ask lock manger for help";
+                        String errorMsg = message+" ask lock manager for help";
                         Toast.makeText(getApplicationContext(),
                                 errorMsg, Toast.LENGTH_LONG).show();
                     }
@@ -347,7 +349,7 @@ public class MngUsers extends AppCompatActivity {
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
         Log.d("REQid",requestId.toString());
-        return requestId.toString();//// TODO: 08/05/2017 chk if really changing
+        return requestId.toString();
 
     }
 

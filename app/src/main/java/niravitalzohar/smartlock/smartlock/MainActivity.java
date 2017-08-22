@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.google.firebase.crash.FirebaseCrash;
+
 public class MainActivity extends AppCompatActivity {
 
     private LinearLayout allLayout;
@@ -19,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         allLayout = (LinearLayout) findViewById(R.id.rel_activity_main);
-
+        FirebaseCrash.log("MainActivity created");
         allLayout.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View view) {

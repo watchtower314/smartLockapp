@@ -24,7 +24,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-
+/* class for conacting with SmartLock team */
 public class ContactUs extends AppCompatActivity {
     EditText massage;
     ImageButton send;

@@ -27,14 +27,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static niravitalzohar.smartlock.smartlock.permission_type.MANGER;
-
+/* class for handling  fingerprint - add , remove . */
 public class FingerPrint extends AppCompatActivity {
     TextView Instructions;
     ImageView add,remove;
     public String l_status=" ";
     StringBuilder requestId = new StringBuilder();
     String lockid="18:fe:34:d4:c6:e8";
-    String userid="58e91fd7fafa6700044b8d61";
     private ProgressDialog pDialog;
     int count=0;
     int flag=0;
@@ -104,31 +103,16 @@ public class FingerPrint extends AppCompatActivity {
                 try {
                     JSONObject jObj = new JSONObject(response);
                     String status=jObj.getString("status");
-
-                    //requestId=jObj.getString("requestId");
-
-
                     if(status.equals("request created")){
                         requestId.append(jObj.getString("requestId"));
                         Log.d("REQid",requestId.toString());
-                        //TODO go to get action
-
-
-                        //  Toast.makeText(getApplicationContext(), "THE LOCK Status ", Toast.LENGTH_LONG).show();
                         getAction2(requestId.toString()).equals("unhandle");
-                        // while (getAction2(requestId.toString()).equals("unhandle")){
-                        //   getAction2(requestId.toString());
-                        // }
-
-                        //  return;
-                        // Launch login activity
-
                     } else {
                         String message=jObj.getString("message");
 
                         // Error occurred in registration. Get the error
                         // message
-                        String errorMsg = message+" ask lock manger for help";
+                        String errorMsg = message+" ask lock manager for help";
                         Toast.makeText(getApplicationContext(),
                                 errorMsg, Toast.LENGTH_LONG).show();
                     }
@@ -142,7 +126,7 @@ public class FingerPrint extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("GJKKK", "LOCK Error: " + error.getMessage());
-                String errorMsg ="error you might no have permission for this action: ask lock manger for help ";
+                String errorMsg ="error you might no have permission for this action: ask lock manager for help ";
                 Toast.makeText(getApplicationContext(),
                         errorMsg, Toast.LENGTH_LONG).show();
                 //  hideDialog();
@@ -165,7 +149,7 @@ public class FingerPrint extends AppCompatActivity {
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
         Log.d("REQid",requestId.toString());
-        return requestId.toString();//// TODO: 08/05/2017 chk if really changing
+        return requestId.toString();
 
     }
 
@@ -185,8 +169,6 @@ public class FingerPrint extends AppCompatActivity {
                 try {
                     JSONObject jObj = new JSONObject(response);
                     String status=jObj.getString("status");
-
-                    //requestId=jObj.getString("requestId");
 
 
                     if(status.equals("request created")){
@@ -223,7 +205,7 @@ public class FingerPrint extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("GJKKK", "LOCK Error: " + error.getMessage());
-                String errorMsg ="error you might no have permission for this action: ask lock manger for help ";
+                String errorMsg ="error you might no have permission for this action: ask lock manager for help ";
 
                 Toast.makeText(getApplicationContext(),
                         errorMsg, Toast.LENGTH_LONG).show();
@@ -256,8 +238,6 @@ public class FingerPrint extends AppCompatActivity {
         pDialog.setMessage("waiting for checking ...");
         showDialog();
        // count++;
-
-
 
         String uri = "https://smartlockproject.herokuapp.com/api/checkLockAction/" + result+
                 "?token="+AppConfig.TOKEN;
@@ -460,7 +440,7 @@ public class FingerPrint extends AppCompatActivity {
 
                         // Error occurred in registration. Get the error
                         // message
-                        String errorMsg = message+" ask lock manger for help";
+                        String errorMsg = message+" ask lock manager for help";
                         Toast.makeText(getApplicationContext(),
                                 errorMsg, Toast.LENGTH_LONG).show();
                     }

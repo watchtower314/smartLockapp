@@ -29,7 +29,7 @@ import java.util.TimeZone;
 import static niravitalzohar.smartlock.smartlock.permission_type.MANGER;
 import static niravitalzohar.smartlock.smartlock.permission_type.MEMBER;
 
-
+//class for user's details email,phone & permissions
 public class UserDetails extends AppCompatActivity {
 
     private TextView TVusername,TVuserphone ,userpermission;

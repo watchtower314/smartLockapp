@@ -22,7 +22,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-
+/*class for users to contact with each other via mail */
 public class ContactUsers extends AppCompatActivity {
     EditText massage,sendTo;
     ImageButton send;

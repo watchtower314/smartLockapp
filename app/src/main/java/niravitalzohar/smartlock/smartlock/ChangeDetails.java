@@ -40,7 +40,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Calendar;
-
+/* to this activity only user with manager permission will get ,the manager can change user's details (only email&phone) and update permission  */
 public class ChangeDetails extends AppCompatActivity {
     private EditText ETusername, ETphone;
     private RadioGroup category, lockpermission;

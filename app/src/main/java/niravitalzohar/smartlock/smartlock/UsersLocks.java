@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-
+//class for list of user's locks - locks the this user have permission for
 public class UsersLocks extends AppCompatActivity {
     private ListView lockList;
     private ProgressDialog pDialog;

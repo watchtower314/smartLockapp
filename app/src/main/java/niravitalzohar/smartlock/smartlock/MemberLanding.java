@@ -26,14 +26,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static niravitalzohar.smartlock.smartlock.permission_type.MEMBER;
-
+/* the main page of user with member/member with physical id   */
 public class MemberLanding extends AppCompatActivity {
     TextView name;
     ImageView lock,fingerPrint,info;
     public String l_status=" ";
     StringBuilder requestId = new StringBuilder();
     String lockid="18:fe:34:d4:c6:e8";
-    String userid="58e91fd7fafa6700044b8d61";
     private ProgressDialog pDialog;
     int count=0;
 
@@ -237,7 +236,7 @@ public class MemberLanding extends AppCompatActivity {
 
                         // Error occurred in registration. Get the error
                         // message
-                        String errorMsg = message+" ask lock manger for help";
+                        String errorMsg = message+" ask lock manager for help";
                         Toast.makeText(getApplicationContext(),
                                 errorMsg, Toast.LENGTH_LONG).show();
                     }

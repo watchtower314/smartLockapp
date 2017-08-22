@@ -3,7 +3,6 @@ package niravitalzohar.smartlock.smartlock;
 /**
  * Created by zohar on 23/03/2017.
  */
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;

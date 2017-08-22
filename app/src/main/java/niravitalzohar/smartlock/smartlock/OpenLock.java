@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static niravitalzohar.smartlock.smartlock.permission_type.MANGER;
-
+//when the lock his open - if user want to close the lock he will press the middle button
 public class OpenLock extends AppCompatActivity {
 private ImageView close_b;
     private String cngTOstatus="close";
@@ -239,24 +239,14 @@ private ImageView close_b;
                     if(status.equals("request created")){
                         requestId.append(jObj.getString("requestId"));
                         Log.d("REQid",requestId.toString());
-                        //TODO go to get action
-
-
-                      //  Toast.makeText(getApplicationContext(), "THE LOCK Status ", Toast.LENGTH_LONG).show();
                         getAction2(requestId.toString()).equals("unhandle");
-                        // while (getAction2(requestId.toString()).equals("unhandle")){
-                        //   getAction2(requestId.toString());
-                        // }
-
-                        //  return;
-                        // Launch login activity
 
                     } else {
                         String message=jObj.getString("message");
 
                         // Error occurred in registration. Get the error
                         // message
-                        String errorMsg = message+" ask lock manger for help";
+                        String errorMsg = message+" ask lock manager for help";
                         Toast.makeText(getApplicationContext(),
                                 errorMsg, Toast.LENGTH_LONG).show();
                     }

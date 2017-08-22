@@ -23,7 +23,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
+/* class for getting lock log of activities   */
 public class Logs extends AppCompatActivity {
     private ListView lv;
     private ProgressDialog pDialog;

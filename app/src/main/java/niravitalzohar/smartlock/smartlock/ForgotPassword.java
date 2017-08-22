@@ -19,7 +19,7 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
+//if user forgot his password he will get temporary password via mail and later he can change this password (at setting->info)
 public class ForgotPassword extends AppCompatActivity {
     EditText userF,newPassword;
     Button cngPass;
@@ -50,8 +50,6 @@ public class ForgotPassword extends AppCompatActivity {
                 String emailF = userF.getText().toString().trim().toLowerCase();
                 String passwordf = newPassword.getText().toString().trim();
                 changePass(emailF,passwordf);
-               // Intent intent = new Intent(getBaseContext(), ForgotPassword.class);
-                //startActivity(intent);
             }
 
         });
@@ -98,11 +96,9 @@ public class ForgotPassword extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // Toast.makeText(ChangeDetails.this,error.getMessage(),Toast.LENGTH_LONG).show();
                         String errorMsg ="error - can't update user's password please try again ";
                         Toast.makeText(getApplicationContext(),
                                 errorMsg, Toast.LENGTH_LONG).show();
-                     //   AppConfig.hideDialog(pDialog);
                     }
                 });
 

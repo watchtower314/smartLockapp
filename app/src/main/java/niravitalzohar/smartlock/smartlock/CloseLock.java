@@ -26,7 +26,7 @@ import java.util.Map;
 
 import static niravitalzohar.smartlock.smartlock.permission_type.MANGER;
 
-//when the lock is close and i want to open it
+//when the lock is close and user want to open it
 public class CloseLock extends AppCompatActivity {
 private ImageView unlock_b;
     public String lock_id;
@@ -249,7 +249,7 @@ private ImageView unlock_b;
 
                         // Error occurred in registration. Get the error
                         // message
-                        String errorMsg = message+" ask lock manger for help";
+                        String errorMsg = message+" ask lock manager for help";
                         Toast.makeText(getApplicationContext(),
                                 errorMsg, Toast.LENGTH_LONG).show();
                     }

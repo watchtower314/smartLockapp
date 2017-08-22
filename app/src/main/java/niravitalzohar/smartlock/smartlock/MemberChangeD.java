@@ -18,7 +18,7 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
+/*class for changing details such as email address , phone number & password  */
 public class MemberChangeD extends AppCompatActivity {
     private EditText ETusername, ETphone ,newPassword ,oldPass;
 

@@ -22,6 +22,7 @@ import org.w3c.dom.Text;
 import java.util.HashMap;
 import java.util.Map;
 
+//at registration user recive email with registration code that i'll  need to enter here in order to sing up to smartlock system
 public class RegCode extends AppCompatActivity {
     EditText num1,num2,num3,num4;
     Button submit;
@@ -72,12 +73,6 @@ public class RegCode extends AppCompatActivity {
 
     public void sendCode(final String numone,final String numtwo,final String numthree,final String numfour ){
         String tag_string_req = "sendcode";
-        //final String lockid="323djdjw32";
-        //final String userid="58e91fd7fafa6700044b8d61";
-
-        //pDialog.setMessage("sending code ...");
-       // showDialog();
-
         StringRequest strReq = new StringRequest(Request.Method.POST,
                 AppConfig.SEND_CODE, new Response.Listener<String>() {
 

@@ -49,6 +49,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+/* manager adding  permission to members for lock */
+
 public class AddMember extends AppCompatActivity {
     private RadioGroup category, lockpermission;
     private RadioButton manger, member, memberpyid, oneTime, anyTime;
@@ -815,7 +817,7 @@ public class AddMember extends AppCompatActivity {
 
                         // Error occurred in registration. Get the error
                         // message
-                        String errorMsg = message+" ask lock manger for help";
+                        String errorMsg = message+" ask lock manager for help";
                         Toast.makeText(getApplicationContext(),
                                 errorMsg, Toast.LENGTH_LONG).show();
                     }

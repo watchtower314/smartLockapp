@@ -26,7 +26,7 @@ import java.util.HashMap;
 
 import static niravitalzohar.smartlock.smartlock.permission_type.GUEST;
 import static niravitalzohar.smartlock.smartlock.permission_type.MANGER;
-
+//class for setting and information
 public class Settings extends AppCompatActivity {
     Button mnglocks,logout,stinfo,sthelp ,stcontact,stlogs,stcontactuser;
 
@@ -44,9 +44,6 @@ public class Settings extends AppCompatActivity {
 
         mnglocks.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-
-                // Launch login activity
-
                 Intent intent = new Intent(
                         Settings.this,
                         UsersLocks.class);
